@@ -1,0 +1,241 @@
+/**
+Global
+ */
+body,
+html {
+    height: 100%
+}
+
+body {
+    background-image: url("/web/img/background.jpg");
+
+    color: #666;
+    font-family: "Open Sans", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.7em;
+}
+
+.header-logo {
+    position: fixed;
+    max-height: 5rem;
+}
+
+.container {
+    padding-left: 250px;
+    transition: all 0.4s ease 0s;
+}
+
+.container.active {
+    padding-left: 0;
+}
+
+.container.active #sidebar-wrapper {
+    left: 0;
+}
+
+.jumbotron {
+    color: #fff;
+    font-family: "Open Sans", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.7em;
+
+    padding-top: 5px;
+    padding-bottom: 10px;
+    margin-top: 1%;
+    margin-right: -15%;
+    margin-left: -15%;
+
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+/**
+Content Logo
+ */
+.content-logo {
+    max-width: 150px;
+}
+
+/**
+Content
+ */
+.content-left {
+    width: 50%;
+    /*float: left;*/
+}
+
+.content-right {
+    padding-top: 5%;
+    float: right;
+    width: 50%;
+}
+
+/**
+Navbar
+ */
+#sidebar-wrapper {
+    margin-left: -250px;
+    left: 250px;
+    width: 250px;
+
+    background-image: -webkit-linear-gradient(top, #ff9800 0%, #ff5722 100%);
+    background-image: -o-linear-gradient(top, #ff9800 0%, #ff5722 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ff9800), to(#ff5722));
+    background-image: linear-gradient(to bottom, #ff9800 0%, #ff5722 100%);
+
+    position: fixed;
+    height: 100%;
+    /*overflow-y: auto;*/
+    z-index: 1000;
+    transition: all 0.4s ease 0s;
+}
+
+#page-content-wrapper {
+    width: 100%;
+}
+
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 250px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar-nav li {
+    line-height: 40px;
+    text-indent: 20px;
+}
+
+.sidebar-nav li a {
+    color: #fff;
+    display: block;
+    text-decoration: none;
+    padding-left: 40px;
+}
+
+.sidebar-nav li a span:before {
+    position: absolute;
+    left: 0;
+    color: #41484c;
+    text-align: center;
+    width: 20px;
+    line-height: 18px;
+}
+
+.sidebar-nav li a:hover,
+.sidebar-nav li.active {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.2);
+    text-decoration: none;
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+    text-decoration: none;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    line-height: 60px;
+    font-size: 18px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: #fff;
+    font-weight: 600;
+
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #fff;
+    background: none;
+}
+
+/**
+
+ */
+.content-header {
+    height: 65px;
+    line-height: 65px;
+}
+
+.content-header h1 {
+    margin: 0;
+    margin-left: 20px;
+    line-height: 65px;
+    display: inline-block;
+}
+
+.btn-menu {
+    color: #000;
+}
+
+.inset {
+    padding: 20px;
+}
+
+.jumbotron p {
+    line-height: 2rem;
+    font-size: 1.4rem;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    z-index: 100;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 0 0;
+    margin: 0 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+
+    background-image: -webkit-linear-gradient(top, #ff9800 0%, #ff5722 100%);
+    background-image: -o-linear-gradient(top, #ff9800 0%, #ff5722 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ff9800), to(#ff5722));
+    background-image: linear-gradient(to bottom, #ff9800 0%, #ff5722 100%);
+
+    background-color: initial;
+    -webkit-background-clip: initial;
+    background-clip: initial;
+    border: 0;
+    border-radius: 0;
+    -webkit-box-shadow: unset;
+    box-shadow: unset;
+    line-height: 40px;
+    text-indent: 20px;
+}
+
+.dropdown > ul > li > a {
+    padding: 20px 15px;
+}
+
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.dropdown-menu > .active > a,
+.dropdown-menu > .active > a:hover,
+.dropdown-menu > .active > a:focus {
+    background-color: rgba(255, 255, 255, 0.2);
+    background-image: -webkit-linear-gradient(top, #ff9800 0%, #ff9800 100%);
+    background-image: -o-linear-gradient(top, #ff9800 0%, #ff9800 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ff9800), to(#ff9800));
+    background-image: linear-gradient(to bottom, #ff9800 0%, #ff9800 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffff9800', endColorstr='#ffff9800', GradientType=0);
+    background-repeat: repeat-x;
+}
+
+#passwordInput {
+    transform: translate(150px, 300px);
+}
