@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Papertowel.iml" filepath="$PROJECT_DIR$/Papertowel.iml" />
       <module fileurl="file://$PROJECT_DIR$/Wundermittel.iml" filepath="$PROJECT_DIR$/Wundermittel.iml" />
     </modules>
   </component>

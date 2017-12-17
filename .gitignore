@@ -3,3 +3,4 @@ Wundermittel.iml
 templates_c/
 vendor/
 cache/
+.env
