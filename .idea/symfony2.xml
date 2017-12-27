@@ -3,5 +3,13 @@
   <component name="Symfony2PluginSettings">
     <option name="pluginEnabled" value="true" />
     <option name="lastServiceGeneratorLanguage" value="yaml" />
+    <option name="twigNamespaces">
+      <list>
+        <twig_namespace enabled="false" namespaceType="BUNDLE" path="templates" />
+        <twig_namespace enabled="false" namespaceType="ADD_PATH" path="templates" />
+        <twig_namespace custom="true" namespaceType="ADD_PATH" path="templates/Base/" />
+        <twig_namespace custom="true" namespaceType="ADD_PATH" path="templates/Canvas/" />
+      </list>
+    </option>
   </component>
 </project>
