@@ -36,5 +36,27 @@ class Translation
      */
     private $translationString;
 
-    // add your own fields
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTranslationId()
+    {
+        return $this->translationId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLanguage(): string
+    {
+        return $this->language;
+    }
 }

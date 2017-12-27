@@ -59,6 +59,21 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "maba/dependency-injection-extra": {
+        "version": "1.0.0"
+    },
+    "maba/webpack-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "33b0bf2e73d774902dd21bab3d93f5b5ce459668"
+        }
+    },
+    "monolog/monolog": {
+        "version": "1.23.0"
+    },
     "ocramius/package-versions": {
         "version": "1.2.0"
     },
@@ -158,11 +173,26 @@
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
     },
+    "symfony/monolog-bridge": {
+        "version": "v4.0.2"
+    },
+    "symfony/monolog-bundle": {
+        "version": "3.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.1",
+            "ref": "c24944bd87dacf0bb8fa218dc21e4a70fff56882"
+        }
+    },
     "symfony/orm-pack": {
         "version": "v1.0.5"
     },
     "symfony/polyfill-mbstring": {
         "version": "v1.6.0"
+    },
+    "symfony/process": {
+        "version": "v4.0.2"
     },
     "symfony/routing": {
         "version": "3.3",
@@ -172,6 +202,9 @@
             "version": "3.3",
             "ref": "a249484db698d1a847a30291c8f732414ac47e25"
         }
+    },
+    "symfony/templating": {
+        "version": "v4.0.2"
     },
     "symfony/twig-bridge": {
         "version": "v4.0.2"

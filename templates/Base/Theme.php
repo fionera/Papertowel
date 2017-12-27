@@ -2,8 +2,9 @@
 
 namespace templates\Base;
 
-class Theme extends \App\Components\Theme\Theme {
-    
+class Theme extends \App\Components\Theme\Theme
+{
+
     /**
      * Theme constructor.
      */
@@ -13,5 +14,7 @@ class Theme extends \App\Components\Theme\Theme {
 
         $this->author = 'Fionera';
         $this->name = 'Base';
+        $this->css = ['/public/css/base.css'];
+        $this->javascript = ['/public/js/base.js'];
     }
 }

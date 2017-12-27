@@ -1,6 +1,6 @@
 <?php
 
-namespace Components\Theme;
+namespace App\Components\Theme;
 
 
 interface ThemeInterface

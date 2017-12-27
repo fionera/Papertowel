@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults autowire="true" autoconfigure="true" public="false"/>
+        <prototype namespace="App\" resource="../src/*"
+                   exclude="../src/{Entity,Migrations,Tests,Services,Bundles,EventListeners}"/>
+
+        <service id="app.event_listeners.kernel_request_listener" class="App\EventListeners\KernelRequestListener">
+            <argument type="service" id="app.services.theme.variables"/>
+            <argument type="service" id="app.services.language.variables"/>
+
+            <tag name="kernel.event_listener" event="kernel.request"/>
+        </service>
+
+
+        <service id="App\Services\Theme\ThemeVariables" autowire="true" public="true">
+            <argument type="service" id="app.services.theme.provider"/>
+            <argument type="service" id="twig"/>
+        </service>
+
+        <service id="app.services.theme.variables" alias="App\Services\Theme\ThemeVariables"/>
+
+
+        <service id="App\Services\Theme\ThemeProvider" autowire="true" public="true">
+            <argument type="service" id="app.services.website.provider"/>
+            <argument type="service" id="logger"/>
+            <argument type="service" id="kernel"/>
+            <argument type="string">%kernel.project_dir%/templates</argument>
+        </service>
+        <service id="app.services.theme.provider" alias="App\Services\Theme\ThemeProvider"/>
+
+
+        <service id="App\Services\WebsiteProvider\WebsiteProvider" autowire="true" public="true">
+            <argument type="service" id="app.services.language.provider"/>
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="doctrine"/>
+            <argument type="service" id="logger"/>
+        </service>
+        <service id="app.services.website.provider" alias="App\Services\WebsiteProvider\WebsiteProvider"/>
+
+
+        <service id="App\Services\Language\LanguageProvider" autowire="true" public="true">
+            <argument type="service" id="twig"/>
+            <argument type="service" id="doctrine"/>
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="logger"/>
+            <argument type="service" id="app.services.session.session_provider"/>
+        </service>
+        <service id="app.services.language.provider" alias="App\Services\Language\LanguageProvider"/>
+
+
+        <service id="App\Services\Language\LanguageVariables" autowire="true" public="true">
+            <argument type="service" id="app.services.website.provider"/>
+            <argument type="service" id="app.services.language.provider"/>
+            <argument type="service" id="twig"/>
+            <argument type="service" id="service_container"/>
+        </service>
+        <service id="app.services.language.variables" alias="App\Services\Language\LanguageVariables"/>
+
+
+        <service id="App\Services\Session\SessionProvider" autowire="true" public="true">
+            <argument type="service" id="request_stack"/>
+        </service>
+        <service id="app.services.session.session_provider" alias="App\Services\Session\SessionProvider"/>
+
+        <prototype namespace="App\Controller\" resource="../src/Controller"/>
+    </services>
+</container>

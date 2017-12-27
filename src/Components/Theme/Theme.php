@@ -2,14 +2,12 @@
 
 namespace App\Components\Theme;
 
-use Components\Theme\ThemeInterface;
-
-class Theme implements ThemeInterface
+abstract class Theme implements ThemeInterface
 {
     /**
      * @var string
      */
-    protected $name;
+    protected $name = '';
 
     /**
      * @var null|string

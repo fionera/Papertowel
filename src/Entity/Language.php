@@ -14,6 +14,7 @@ class Language
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @var int $id
      */
     private $id;
     
@@ -25,8 +26,42 @@ class Language
 
     /**
      * @ORM\Column(type="integer", name="translation_id")
-     * @ORM\ManyToOne(targetEntity="App\Entity\Translation")
-     * @var Translation
+     * @var Translation $name
      */
-    protected $translation; //TODO: Get the correct Translation Object
+    private $name;
+
+    /**
+     * Language constructor.
+     * @param string $languageString
+     * @param Translation $name
+     */
+    public function __construct(string $languageString, Translation $name)
+    {
+        $this->languageString = $languageString;
+        $this->name = $name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLanguageString(): string
+    {
+        return $this->languageString;
+    }
+
+    /**
+     * @return Translation
+     */
+    public function getName(): Translation
+    {
+        return $this->name;
+    }
 }
