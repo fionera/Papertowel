@@ -3,12 +3,11 @@
 namespace App\Services\Theme;
 
 use App\Components\Theme\CombinedTheme;
-use App\Components\Theme\Theme;
 use App\Components\Theme\ThemeInterface;
 use App\Services\WebsiteProvider\WebsiteProvider;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\KernelInterface;
+use templates\Base\Theme;
 
 class ThemeProvider
 {
@@ -47,18 +46,52 @@ class ThemeProvider
         $this->templateBasePath = $templateBasePath;
     }
 
-    public function getTemplatePaths(): array
+    /**
+     * @param ThemeInterface $theme
+     * @return string[]
+     * @throws \LogicException
+     */
+    public function getDependencyNames(ThemeInterface $theme): array
     {
-        $currentTheme = $this->getThemeForCurrentRequest()->getName();
+        $dependencies = [];
 
-        $combinedTheme = $this->getCombinedTheme($currentTheme);
+        $dependencies[] = $theme->getDependencies();
 
-        $templatePaths = [];
-        foreach (explode(';', $combinedTheme->getName()) as $name) {
-            $templatePaths[] = $this->getTemplatePath($name);
+        foreach ($theme->getDependencies() as $dependency) {
+            $dependencies[] = $this->getDependencyNames($this->getThemeByName($dependency));
         }
 
-        return array_reverse($templatePaths);
+        return array_unique(array_merge(...$dependencies));
+    }
+
+    /**
+     * @param ThemeInterface $theme
+     * @return ThemeInterface[]
+     * @throws \LogicException
+     */
+    public function getDependencyThemes(ThemeInterface $theme): array
+    {
+        $themes = [];
+        foreach ($this->getDependencyNames($theme) as $dependencyName) {
+            $themes[] = $this->getThemeByName($dependencyName);
+        }
+
+        return $themes;
+    }
+
+    /**
+     * @param ThemeInterface $themeInterface
+     * @return string[]
+     * @throws \LogicException
+     */
+    public function getDependencyNamespaces(ThemeInterface $themeInterface) : array
+    {
+        $namespaces = [];
+        foreach ($this->getDependencyThemes($themeInterface) as $theme) {
+            $namespaces[$theme->getName()] = $this->getTemplatePath($theme);
+        }
+
+        return $namespaces;
     }
 
     /**
@@ -73,16 +106,6 @@ class ThemeProvider
         }
 
         return $this->templateBasePath . '/' . $themeName;
-    }
-
-    /**
-     * @param ThemeInterface|string $theme
-     * @return ThemeInterface
-     * @throws \LogicException
-     */
-    public function getCombinedTheme($theme) : ThemeInterface
-    {
-        return new CombinedTheme($theme, $this);
     }
 
     /**

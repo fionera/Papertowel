@@ -46,9 +46,10 @@ class FileController extends Controller
 
     private function fileExists(string $path): string
     {
-        foreach ($this->themeProvider->getTemplatePaths() as $templatePath) {
+        $paths = $this->themeProvider->getDependencyNamespaces($this->themeProvider->getThemeForCurrentRequest());
+        foreach ($paths as $themeName => $templatePath) {
             if (file_exists($templatePath . '/public/' . $path)) {
-                return 'public/' . $path;
+                return '@' . $themeName .'/' . 'public/' . $path;
             }
         }
 

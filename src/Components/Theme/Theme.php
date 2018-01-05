@@ -15,9 +15,9 @@ abstract class Theme implements ThemeInterface
     protected $author;
 
     /**
-     * @var null|string
+     * @var string[]
      */
-    protected $extend;
+    protected $dependencies = [];
 
     /**
      * @var array
@@ -53,11 +53,11 @@ abstract class Theme implements ThemeInterface
     }
 
     /**
-     * @return null|string
+     * @return string[]
      */
-    public function getExtend(): ?string
+    public function getDependencies(): array
     {
-        return $this->extend;
+        return $this->dependencies;
     }
 
     /**

@@ -9,7 +9,7 @@ interface ThemeInterface
 
     public function getAuthor(): ?string;
 
-    public function getExtend(): ?string;
+    public function getDependencies(): array;
 
     public function getCss(): array;
 
