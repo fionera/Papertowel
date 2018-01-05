@@ -7,8 +7,9 @@
       <list>
         <twig_namespace enabled="false" namespaceType="BUNDLE" path="templates" />
         <twig_namespace enabled="false" namespaceType="ADD_PATH" path="templates" />
-        <twig_namespace custom="true" namespaceType="ADD_PATH" path="templates/Base/" />
-        <twig_namespace custom="true" namespaceType="ADD_PATH" path="templates/Canvas/" />
+        <twig_namespace custom="true" namespaceType="ADD_PATH" path="templates/Base" />
+        <twig_namespace custom="true" namespaceType="ADD_PATH" path="templates/Canvas" />
+        <twig_namespace custom="true" namespaceType="ADD_PATH" path="templates/TollesTheme" />
       </list>
     </option>
   </component>

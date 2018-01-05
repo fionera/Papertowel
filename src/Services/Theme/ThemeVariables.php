@@ -3,7 +3,6 @@
 namespace App\Services\Theme;
 
 use App\Components\Theme\CombinedTheme;
-use App\Components\Theme\Theme;
 use App\Components\Theme\ThemeInterface;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -37,13 +36,22 @@ class ThemeVariables
      */
     public function getTemplateVariables(): array
     {
-        /** @var ThemeInterface $theme */
-        $theme = $this->themeProvider->getCombinedTheme($this->themeProvider->getThemeForCurrentRequest());
+        /** @var ThemeInterface[] $theme */
+        $themes = array_reverse($this->themeProvider->getDependencyThemes($this->themeProvider->getThemeForCurrentRequest()));
 
         $themeVariables = [
-            'stylesheets' => $theme->getCss(),
-            'javascripts' => $theme->getJavascript()
+            'stylesheets' => [],
+            'javascripts' => []
         ];
+
+        /** @var ThemeInterface $theme */
+        foreach ($themes as $theme) {
+            $themeVariables['javascripts'][] = $theme->getJavascript();
+            $themeVariables['stylesheets'][] = $theme->getCss();
+        }
+
+        $themeVariables['javascripts'] = array_merge(...$themeVariables['javascripts']);
+        $themeVariables['stylesheets'] = array_merge(...$themeVariables['stylesheets']);
 
         return $themeVariables;
     }
@@ -58,12 +66,19 @@ class ThemeVariables
         /** @var Twig_LoaderInterface $loader */
         $loader = $this->environment->getLoader();
 
+        $currentTheme = $this->themeProvider->getThemeForCurrentRequest();
+
         /** @var string[] $themePaths */
-        $themePaths = $this->themeProvider->getTemplatePaths();
+        $themePaths = $this->themeProvider->getDependencyNamespaces($currentTheme);
+        $currentThemePath = $this->themeProvider->getTemplatePath($currentTheme);
 
         if ($loader instanceof FilesystemLoader) {
             if (\count($loader->getPaths()) === 1) {
-                $loader->setPaths($themePaths);
+                foreach ($themePaths as $themeName => $path) {
+                    $loader->setPaths($path, $themeName);
+                }
+
+                $loader->setPaths($currentThemePath);
             }
 //            else {
 //                $paths = $loader->getPaths();

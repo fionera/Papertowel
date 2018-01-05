@@ -1,20 +1,30 @@
 <!DOCTYPE html>
+{% block html_outer %}
 <html lang="{{ translation.selectedLanguage }}">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %}</title>
-    {% block stylesheets %}
-        {% for stylesheet in template.stylesheets %}
-            <link rel="stylesheet" href="{{ stylesheet }}" type="text/css"/>
-        {% endfor %}
-    {% endblock %}
-</head>
-<body>
-{% block body %}{% endblock %}
-{% block javascripts %}
-    {% for javascript in template.javascripts %}
-        <script type="text/javascript" src="{{ javascript }}"></script>
-    {% endfor %}
+{% block head_outer %}
+    <head>
+        {% block head_inner %}
+            <meta charset="UTF-8">
+            <title>{% block title %}{% endblock %}</title>
+            {% block stylesheets %}
+                {% for stylesheet in template.stylesheets %}
+                    <link rel="stylesheet" href="{{ stylesheet }}" type="text/css"/>
+                {% endfor %}
+            {% endblock %}
+        {% endblock %}
+    </head>
 {% endblock %}
-</body>
+
+{% block body_outer %}
+    <body>
+    {% block body_inner %}
+        {% block javascripts %}
+            {% for javascript in template.javascripts %}
+                <script type="text/javascript" src="{{ javascript }}"></script>
+            {% endfor %}
+        {% endblock %}
+    {% endblock %}
+    </body>
+{% endblock %}
 </html>
+{% endblock %}
