@@ -16,5 +16,6 @@ class StaticPage
      */
     private $id;
 
+
     // add your own fields
 }
