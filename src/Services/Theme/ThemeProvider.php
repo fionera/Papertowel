@@ -2,12 +2,11 @@
 
 namespace App\Services\Theme;
 
-use App\Components\Theme\CombinedTheme;
 use App\Components\Theme\ThemeInterface;
+use App\Components\Theme\ThemeNotFoundException;
 use App\Services\WebsiteProvider\WebsiteProvider;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
-use templates\Base\Theme;
 
 class ThemeProvider
 {
@@ -25,10 +24,14 @@ class ThemeProvider
      * @var KernelInterface
      */
     private $kernel;
+
     /**
      * @var string
      */
     private $templateBasePath;
+
+
+    private $themes = [];
 
 
     /**
@@ -54,7 +57,6 @@ class ThemeProvider
     public function getDependencyNames(ThemeInterface $theme): array
     {
         $dependencies = [];
-
         $dependencies[] = $theme->getDependencies();
 
         foreach ($theme->getDependencies() as $dependency) {
@@ -75,41 +77,32 @@ class ThemeProvider
         foreach ($this->getDependencyNames($theme) as $dependencyName) {
             $themes[] = $this->getThemeByName($dependencyName);
         }
-
         return $themes;
-    }
-
-    /**
-     * @param ThemeInterface $themeInterface
-     * @return string[]
-     * @throws \LogicException
-     */
-    public function getDependencyNamespaces(ThemeInterface $themeInterface) : array
-    {
-        $namespaces = [];
-        foreach ($this->getDependencyThemes($themeInterface) as $theme) {
-            $namespaces[$theme->getName()] = $this->getTemplatePath($theme);
-        }
-
-        return $namespaces;
     }
 
     /**
      * @param string|ThemeInterface $theme
      * @return string
+     * @throws ThemeNotFoundException
      */
     public function getTemplatePath($theme): string
     {
+
         $themeName = $theme;
         if ($theme instanceof ThemeInterface) {
             $themeName = $theme->getName();
         }
 
-        return $this->templateBasePath . '/' . $themeName;
+        if (!isset($this->getAllThemeFoldersWithName()[$themeName])) {
+            throw new ThemeNotFoundException('Could not found Theme "' . $themeName . '"');
+        }
+
+        return $this->getAllThemeFoldersWithName()[$themeName];
     }
 
     /**
      * @return ThemeInterface
+     * @throws \App\Components\Theme\ThemeNotFoundException
      * @throws \LogicException
      */
     public function getThemeForCurrentRequest(): ThemeInterface
@@ -120,17 +113,65 @@ class ThemeProvider
     }
 
     /**
+     * @param string $themeName
+     * @return ThemeInterface
+     * @throws ThemeNotFoundException
+     */
+    public function getThemeByName(string $themeName): ThemeInterface
+    {
+        if (\count($this->themes) === 0) {
+            $this->loadAllThemes();
+        }
+
+        if (!array_key_exists($themeName, $this->themes)) {
+            throw new ThemeNotFoundException('Could not found Theme "' . $themeName . '"');
+        }
+
+        return $this->themes[$themeName];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getThemeNames(): array
+    {
+        return array_keys($this->themes);
+    }
+
+    private function loadAllThemes(): void
+    {
+        foreach ($this->getAllThemeFoldersWithName() as $themeName => $themeFolder) {
+            $this->themes[$themeName] = $this->loadTheme($themeName);
+        }
+    }
+
+    public function getAllThemeFoldersWithName(): array
+    {
+        return array_merge(...array_map(function ($themeFolder) {
+            return [basename($themeFolder) => $themeFolder];
+        }, $this->getAllThemeFolders()));
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getAllThemeFolders(): array
+    {
+        return glob($this->templateBasePath . '/*', GLOB_ONLYDIR);
+    }
+
+    /**
      * @return null|ThemeInterface
      * @throws \LogicException
      */
-    public function getThemeByName(string $themeName): ?ThemeInterface
+    private function loadTheme(string $themeName): ?ThemeInterface
     {
         $classPath = $this->kernel->getRootDir() . '/../templates/' . $themeName . '/Theme.php';
         //$classPath = '../../../templates/Base/Theme.php';
 
         if (!file_exists($classPath)) {
             $this->logger->error('Could not find Theme.php for Theme: "' . $themeName . '"');
-            throw new \LogicException('');
+            throw new \LogicException('Could not find Theme.php for Theme: "' . $themeName . '"');
         }
 
         require_once $classPath;
