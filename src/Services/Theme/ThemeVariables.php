@@ -2,7 +2,6 @@
 
 namespace App\Services\Theme;
 
-use App\Components\Theme\CombinedTheme;
 use App\Components\Theme\ThemeInterface;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -14,6 +13,7 @@ class ThemeVariables
      * @var ThemeProvider
      */
     private $themeProvider;
+
     /**
      * @var Environment
      */
@@ -66,19 +66,19 @@ class ThemeVariables
         /** @var Twig_LoaderInterface $loader */
         $loader = $this->environment->getLoader();
 
-        $currentTheme = $this->themeProvider->getThemeForCurrentRequest();
+        $currentTheme = $this->themeProvider->getThemeForCurrentRequest()->getName();
 
         /** @var string[] $themePaths */
-        $themePaths = $this->themeProvider->getDependencyNamespaces($currentTheme);
-        $currentThemePath = $this->themeProvider->getTemplatePath($currentTheme);
+        $themePaths = $this->themeProvider->getAllThemeFoldersWithName();
 
         if ($loader instanceof FilesystemLoader) {
             if (\count($loader->getPaths()) === 1) {
                 foreach ($themePaths as $themeName => $path) {
+                    if ($themeName)
                     $loader->setPaths($path, $themeName);
                 }
 
-                $loader->setPaths($currentThemePath);
+                $loader->setPaths($themePaths[$currentTheme]);
             }
 //            else {
 //                $paths = $loader->getPaths();
