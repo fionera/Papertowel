@@ -1,9 +1,9 @@
 <?php
 
-namespace App\EventListeners;
+namespace App\EventListener;
 
-use App\Services\Language\LanguageVariables;
-use App\Services\Theme\ThemeVariables;
+use App\Service\Language\LanguageVariables;
+use App\Service\Theme\ThemeVariables;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 class KernelRequestListener

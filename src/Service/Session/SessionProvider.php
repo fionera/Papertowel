@@ -4,7 +4,7 @@
  */
 
 
-namespace App\Services\Session;
+namespace App\Service\Session;
 
 
 use Symfony\Component\HttpFoundation\RequestStack;

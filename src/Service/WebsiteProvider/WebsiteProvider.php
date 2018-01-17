@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\WebsiteProvider;
+namespace App\Service\WebsiteProvider;
 
 use App\Entity\Website;
-use App\Services\Language\LanguageProvider;
+use App\Service\Language\LanguageProvider;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

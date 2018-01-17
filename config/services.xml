@@ -6,65 +6,65 @@
     <services>
         <defaults autowire="true" autoconfigure="true" public="false"/>
         <prototype namespace="App\" resource="../src/*"
-                   exclude="../src/{Entity,Migrations,Tests,Services,Bundles,EventListeners}"/>
+                   exclude="../src/{Entity,Migration,Tests,Service,Bundles,EventListener}"/>
 
-        <service id="App\EventListeners\KernelRequestListener">
-            <argument type="service" id="app.services.theme.variables"/>
-            <argument type="service" id="app.services.language.variables"/>
+        <service id="App\EventListener\KernelRequestListener">
+            <argument type="service" id="app.service.theme.variables"/>
+            <argument type="service" id="app.service.language.variables"/>
 
             <tag name="kernel.event_listener" event="kernel.request"/>
         </service>
-        <service id="app.event_listeners.kernel_request_listener" alias="App\EventListeners\KernelRequestListener"/>
+        <service id="app.event_listener.kernel_request_listener" alias="App\EventListener\KernelRequestListener"/>
 
 
-        <service id="App\Services\Theme\ThemeVariables" autowire="true" public="true">
-            <argument type="service" id="app.services.theme.provider"/>
+        <service id="App\Service\Theme\ThemeVariables" autowire="true" public="true">
+            <argument type="service" id="app.service.theme.provider"/>
             <argument type="service" id="twig"/>
         </service>
-        <service id="app.services.theme.variables" alias="App\Services\Theme\ThemeVariables"/>
+        <service id="app.service.theme.variables" alias="App\Service\Theme\ThemeVariables"/>
 
 
-        <service id="App\Services\Theme\ThemeProvider" autowire="true" public="true">
-            <argument type="service" id="app.services.website.provider"/>
+        <service id="App\Service\Theme\ThemeProvider" autowire="true" public="true">
+            <argument type="service" id="app.service.website.provider"/>
             <argument type="service" id="logger"/>
             <argument type="service" id="kernel"/>
             <argument type="string">%kernel.project_dir%/templates</argument>
         </service>
-        <service id="app.services.theme.provider" alias="App\Services\Theme\ThemeProvider"/>
+        <service id="app.service.theme.provider" alias="App\Service\Theme\ThemeProvider"/>
 
 
-        <service id="App\Services\WebsiteProvider\WebsiteProvider" autowire="true" public="true">
-            <argument type="service" id="App\Services\Language\LanguageProvider"/>
+        <service id="App\Service\WebsiteProvider\WebsiteProvider" autowire="true" public="true">
+            <argument type="service" id="App\Service\Language\LanguageProvider"/>
             <argument type="service" id="request_stack"/>
             <argument type="service" id="doctrine"/>
             <argument type="service" id="logger"/>
         </service>
-        <service id="app.services.website.provider" alias="App\Services\WebsiteProvider\WebsiteProvider"/>
+        <service id="app.service.website.provider" alias="App\Service\WebsiteProvider\WebsiteProvider"/>
 
 
-        <service id="App\Services\Language\LanguageProvider" autowire="false" public="true">
+        <service id="App\Service\Language\LanguageProvider" autowire="false" public="true">
             <argument type="service" id="twig"/>
             <argument type="service" id="doctrine"/>
             <argument type="service" id="request_stack"/>
             <argument type="service" id="logger"/>
-            <argument type="service" id="App\Services\Session\SessionProvider"/>
+            <argument type="service" id="App\Service\Session\SessionProvider"/>
         </service>
-        <service id="app.services.language.provider" alias="App\Services\Language\LanguageProvider"/>
+        <service id="app.service.language.provider" alias="App\Service\Language\LanguageProvider"/>
 
 
-        <service id="App\Services\Language\LanguageVariables" autowire="true" public="true">
-            <argument type="service" id="App\Services\WebsiteProvider\WebsiteProvider"/>
-            <argument type="service" id="App\Services\Language\LanguageProvider"/>
+        <service id="App\Service\Language\LanguageVariables" autowire="true" public="true">
+            <argument type="service" id="App\Service\WebsiteProvider\WebsiteProvider"/>
+            <argument type="service" id="App\Service\Language\LanguageProvider"/>
             <argument type="service" id="twig"/>
             <argument type="service" id="service_container"/>
         </service>
-        <service id="app.services.language.variables" alias="App\Services\Language\LanguageVariables"/>
+        <service id="app.service.language.variables" alias="App\Service\Language\LanguageVariables"/>
 
 
-        <service id="App\Services\Session\SessionProvider" autowire="true" public="true">
+        <service id="App\Service\Session\SessionProvider" autowire="true" public="true">
             <argument type="service" id="request_stack"/>
         </service>
-        <service id="app.services.session.session_provider" alias="App\Services\Session\SessionProvider"/>
+        <service id="app.service.session.session_provider" alias="App\Service\Session\SessionProvider"/>
 
         <prototype namespace="App\Controller\" resource="../src/Controller">
             <!--<argument type="service" id="service_container"/>-->
