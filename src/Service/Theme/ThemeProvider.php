@@ -30,9 +30,11 @@ class ThemeProvider
      */
     private $templateBasePath;
 
-
+    /**
+     * A cache for all Themes
+     * @var ThemeInterface[]
+     */
     private $themes = [];
-
 
     /**
      * ThemeProvider constructor.
