@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Theme;
+namespace App\Service\Theme;
 
-use App\Components\Theme\ThemeInterface;
+use App\Component\Theme\ThemeInterface;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig_LoaderInterface;

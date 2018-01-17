@@ -3,10 +3,10 @@
  * Coded by fionera.
  */
 
-namespace App\Services\Language;
+namespace App\Service\Language;
 
 use App\Entity\Language;
-use App\Services\WebsiteProvider\WebsiteProvider;
+use App\Service\WebsiteProvider\WebsiteProvider;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Twig\Environment;

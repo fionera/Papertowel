@@ -3,11 +3,11 @@
  * Coded by fionera.
  */
 
-namespace App\Services\Language;
+namespace App\Service\Language;
 
 use App\Entity\Language;
 use App\Entity\Translation;
-use App\Services\Session\SessionProvider;
+use App\Service\Session\SessionProvider;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\HttpFoundation\RequestStack;

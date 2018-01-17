@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Components\Theme;
+namespace App\Component\Theme;
 
 abstract class Theme implements ThemeInterface
 {

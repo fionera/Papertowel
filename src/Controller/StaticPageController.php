@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Components\Theme\Theme;
-use App\Components\Theme\ThemeInterface;
+use App\Component\Theme\Theme;
+use App\Component\Theme\ThemeInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

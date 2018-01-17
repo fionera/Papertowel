@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Theme;
+namespace App\Service\Theme;
 
-use App\Components\Theme\ThemeInterface;
-use App\Components\Theme\ThemeNotFoundException;
-use App\Services\WebsiteProvider\WebsiteProvider;
+use App\Component\Theme\ThemeInterface;
+use App\Component\Theme\ThemeNotFoundException;
+use App\Service\WebsiteProvider\WebsiteProvider;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -102,7 +102,7 @@ class ThemeProvider
 
     /**
      * @return ThemeInterface
-     * @throws \App\Components\Theme\ThemeNotFoundException
+     * @throws \App\Component\Theme\ThemeNotFoundException
      * @throws \LogicException
      */
     public function getThemeForCurrentRequest(): ThemeInterface

@@ -2,7 +2,7 @@
 
 namespace templates\Base;
 
-class Theme extends \App\Components\Theme\Theme
+class Theme extends \App\Component\Theme\Theme
 {
 
     /**
