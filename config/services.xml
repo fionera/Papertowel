@@ -8,13 +8,13 @@
         <prototype namespace="App\" resource="../src/*"
                    exclude="../src/{Entity,Migration,Tests,Service,Bundles,EventListener}"/>
 
-        <service id="App\EventListener\KernelRequestListener">
+        <service id="App\EventListener\SetVariablesKernelRequestListener">
             <argument type="service" id="app.service.theme.variables"/>
             <argument type="service" id="app.service.language.variables"/>
 
             <tag name="kernel.event_listener" event="kernel.request"/>
         </service>
-        <service id="app.event_listener.kernel_request_listener" alias="App\EventListener\KernelRequestListener"/>
+        <service id="app.event_listener.set_variables_kernel_request_listener" alias="App\EventListener\SetVariablesKernelRequestListener"/>
 
 
         <service id="App\Service\Theme\ThemeVariables" autowire="true" public="true">
@@ -31,6 +31,15 @@
             <argument type="string">%kernel.project_dir%/templates</argument>
         </service>
         <service id="app.service.theme.provider" alias="App\Service\Theme\ThemeProvider"/>
+
+
+        <service id="App\Service\Plugin\PluginLoader" autowire="true" public="true">
+            <argument type="service" id="app.service.website.provider"/>
+            <argument type="service" id="logger"/>
+            <argument type="service" id="kernel"/>
+            <argument type="string">%kernel.project_dir%/templates</argument>
+        </service>
+        <service id="app.service.plugin.loader" alias="App\Service\Plugin\PluginLoader"/>
 
 
         <service id="App\Service\WebsiteProvider\WebsiteProvider" autowire="true" public="true">

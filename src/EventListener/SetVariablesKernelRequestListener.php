@@ -6,7 +6,7 @@ use App\Service\Language\LanguageVariables;
 use App\Service\Theme\ThemeVariables;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
-class KernelRequestListener
+class SetVariablesKernelRequestListener
 {
     /**
      * @var ThemeVariables

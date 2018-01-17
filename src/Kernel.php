@@ -61,3 +61,17 @@ class Kernel extends BaseKernel
         $routes->import($confDir.'/routes'.self::CONFIG_EXTS, '/', 'glob');
     }
 }
+
+
+function Papertowel(Papertowel $newInstance = null) : Papertowel
+{
+    static $instance;
+
+    if ($newInstance !== null) {
+        $instance = $newInstance;
+    }
+
+    if ($instance === null) {
+
+    }
+}

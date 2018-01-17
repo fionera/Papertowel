@@ -10,6 +10,9 @@
         <twig_namespace custom="true" namespaceType="ADD_PATH" path="templates/Base" />
         <twig_namespace custom="true" namespaceType="ADD_PATH" path="templates/Canvas" />
         <twig_namespace custom="true" namespaceType="ADD_PATH" path="templates/TollesTheme" />
+        <twig_namespace enabled="false" namespace="Base" namespaceType="ADD_PATH" path="vendor/symfony/framework-bundle/Tests/Fixtures/BaseBundle/Resources/views" />
+        <twig_namespace custom="true" namespace="Base" namespaceType="ADD_PATH" path="templates/Base" />
+        <twig_namespace custom="true" namespace="ExamplePlugin" namespaceType="ADD_PATH" path="plugins/ExamplePlugin/templates" />
       </list>
     </option>
   </component>
