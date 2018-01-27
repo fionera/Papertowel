@@ -21,7 +21,6 @@ class StaticPageController extends Controller
      */
     public function indexAction($id)
     {
-
         //die(print_r($this->container->get('twig')->getLoader()->getPaths('__main__')));
         return $this->render('frontend/index/index.html.twig', array(
             'number' => $id,

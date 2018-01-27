@@ -7,9 +7,10 @@ namespace App\Service\Language;
 
 use App\Entity\Language;
 use App\Entity\Translation;
-use App\Service\Session\SessionProvider;
+use App\Service\Session\SessionProvider as SessionProvider;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment;
 
@@ -19,19 +20,11 @@ class LanguageProvider
      * @var LoggerInterface
      */
     private $logger;
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
 
     /**
-     * @var Environment
+     * @var RegistryInterface
      */
-    private $environment;
-    /**
-     * @var ManagerRegistry
-     */
-    private $managerRegistry;
+    private $registry;
     /**
      * @var SessionProvider
      */
@@ -39,18 +32,14 @@ class LanguageProvider
 
     /**
      * LanguageProvider constructor.
-     * @param Environment $environment
-     * @param ManagerRegistry $managerRegistry
-     * @param RequestStack $requestStack
+     * @param RegistryInterface $registry
      * @param LoggerInterface $logger
      * @param SessionProvider $sessionProvider
      */
-    public function __construct(Environment $environment, ManagerRegistry $managerRegistry, RequestStack $requestStack, LoggerInterface $logger, SessionProvider $sessionProvider)
+    public function __construct(RegistryInterface $registry, LoggerInterface $logger, SessionProvider $sessionProvider)
     {
         $this->logger = $logger;
-        $this->requestStack = $requestStack;
-        $this->environment = $environment;
-        $this->managerRegistry = $managerRegistry;
+        $this->registry = $registry;
         $this->sessionProvider = $sessionProvider;
     }
 
@@ -59,7 +48,7 @@ class LanguageProvider
      */
     public function getDefaultLanguage(): Language
     {
-        return $this->managerRegistry->getRepository(Language::class)->findOneBy(['id' => 0]);
+        return $this->registry->getRepository(Language::class)->findOneBy(['id' => 0]);
     }
 
     /**
@@ -70,7 +59,7 @@ class LanguageProvider
         if ($this->sessionProvider->getSession()->has('selectedLanguage')) {
             $selectedLanguageId = $this->sessionProvider->getSession()->get('selectedLanguage');
 
-            $language = $this->managerRegistry->getRepository(Language::class)->findOneBy(['id' => $selectedLanguageId]);
+            $language = $this->registry->getRepository(Language::class)->findOneBy(['id' => $selectedLanguageId]);
             if ($language !== null) {
                 return $language;
             }
@@ -90,6 +79,6 @@ class LanguageProvider
             $languageLanguage = $this->getCurrentLanguage();
         }
 
-        $this->managerRegistry->getRepository(Translation::class)->getTranslationForLanguage($languageLanguage, $translationId);
+        $this->registry->getRepository(Translation::class)->getTranslationForLanguage($languageLanguage, $translationId);
     }
 }

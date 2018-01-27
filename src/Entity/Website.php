@@ -66,7 +66,7 @@ class Website
      * @param Language[]|null $supportedLanguages
      * @param Website|null $parent
      */
-    public function __construct(string $domain, string $themeName, int $pageTitle, Language $defaultLanguage, $supportedLanguages = [], $parent = null)
+    public function __construct(string $domain, string $themeName, int $pageTitle, Language $defaultLanguage, array $supportedLanguages = [], $parent = null)
     {
         $this->domain = $domain;
         $this->parent = $parent;
