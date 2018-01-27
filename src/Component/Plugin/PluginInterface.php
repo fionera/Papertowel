@@ -24,7 +24,12 @@ interface PluginInterface
     /**
      * @return float
      */
-    public function getVersion() : double;
+    public function getVersion() : float;
+
+    /**
+     * @return string
+     */
+    public function getDescription() : string;
 
     /**
      * @param ContainerInterface $container

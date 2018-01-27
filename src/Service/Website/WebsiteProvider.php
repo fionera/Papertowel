@@ -1,60 +1,45 @@
 <?php
 
-namespace App\Service\WebsiteProvider;
+namespace App\Service\Website;
 
 use App\Entity\Website;
-use App\Service\Language\LanguageProvider;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class WebsiteProvider
 {
     /**
-     * @var RequestStack $requestStack
-     */
-    protected $requestStack;
-
-    /**
-     * @var ManagerRegistry $doctrine
+     * @var RegistryInterface $doctrine
      */
     private $doctrine;
+
     /**
      * @var LoggerInterface $logger
      */
     private $logger;
-    /**
-     * @var LanguageProvider
-     */
-    private $languageProvider;
 
     /**
-     * WebsiteProvider constructor.
-     * @param LanguageProvider $languageProvider
-     * @param RequestStack $requestStack
-     * @param ManagerRegistry $doctrine
+     * LanguageProvider constructor.
+     * @param RegistryInterface $registry
      * @param LoggerInterface $logger
      */
-    public function __construct(LanguageProvider $languageProvider, RequestStack $requestStack, ManagerRegistry $doctrine, LoggerInterface $logger)
+    public function __construct(RegistryInterface $registry, LoggerInterface $logger)
     {
-        $this->languageProvider = $languageProvider;
-        $this->requestStack = $requestStack;
-        $this->doctrine = $doctrine;
+        $this->doctrine = $registry;
         $this->logger = $logger;
     }
 
     /**
-     * @return Website
-     * @throws \LogicException
+     * @param Request $request
+     * @return null|Website
+     * @throws SuspiciousOperationException
      */
-    public function getWebsite(): Website
+    public function getWebsite(Request $request): ?Website
     {
-        $request = $this->requestStack->getCurrentRequest();
-        if ($request === null) {
-            throw new \LogicException('CurrentRequest should not be null');
-        }
-
         $requestDomain = $this->extractDomain($request->getHost());
         $requestSubDomain = $this->extractSubDomains($request->getHost());
 
@@ -66,12 +51,10 @@ class WebsiteProvider
         }
 
         if ($website === null) {
-            $website = new Website('', 'Base', '', $this->languageProvider->getDefaultLanguage());
-            $this->logger->error('Could not find Website: "' . $requestDomain . '"');
+            $this->logger->debug('Could not find Website: "' . $requestDomain . '"');
         }
 
         return $website;
-
     }
 
     /**

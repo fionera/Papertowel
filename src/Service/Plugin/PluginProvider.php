@@ -7,49 +7,76 @@
 namespace App\Service\Plugin;
 
 
-use App\Component\Plugin\Plugin;
 use App\Component\Plugin\PluginInterface;
-use App\Service\WebsiteProvider\WebsiteProvider;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class PluginLoader
+class PluginProvider
 {
-    /**
-     * @var WebsiteProvider
-     */
-    private $websiteProvider;
     /**
      * @var LoggerInterface
      */
     private $logger;
+
     /**
      * @var KernelInterface
      */
     private $kernel;
+
     /**
      * @var string
      */
     private $pluginBasePath;
 
     /**
-     * @var PluginInterface
+     * @var PluginInterface[]|null
      */
-    private $plugins = [];
+    private $plugins = null;
+
+    /** @var bool Already tried to load Plugins? */
+    private $booted = false;
 
     /**
-     * ThemeProvider constructor.
-     * @param WebsiteProvider $websiteProvider
+     * LanguageProvider constructor.
      * @param LoggerInterface $logger
      * @param KernelInterface $kernel
      * @param string $pluginBasePath
      */
-    public function __construct(WebsiteProvider $websiteProvider, LoggerInterface $logger, KernelInterface $kernel, string $pluginBasePath)
+    public function __construct(LoggerInterface $logger, KernelInterface $kernel, string $pluginBasePath)
     {
-        $this->websiteProvider = $websiteProvider;
         $this->logger = $logger;
         $this->kernel = $kernel;
         $this->pluginBasePath = $pluginBasePath;
+    }
+
+    /**
+     * @return PluginInterface[]
+     */
+    public function getPluginList(): array
+    {
+        $this->bootPluginLoader();
+
+        return $this->plugins ?? [];
+    }
+
+    /**
+     * @param string $pluginName
+     * @return PluginInterface|null
+     */
+    public function getPlugin(string $pluginName): ?PluginInterface
+    {
+        $this->bootPluginLoader();
+
+        return $this->plugins[$pluginName];
+    }
+
+    private function bootPluginLoader(): void
+    {
+        if (!$this->booted) {
+            $this->loadAllPlugins();
+
+            $this->booted = true;
+        }
     }
 
     /**
@@ -58,7 +85,8 @@ class PluginLoader
     private function loadAllPlugins(): void
     {
         foreach ($this->getAllPluginFolders() as $pluginFolder) {
-            $this->plugins[basename($pluginFolder)] = $this->loadPlugin($pluginFolder);
+            $pluginName = basename($pluginFolder);
+            $this->plugins[$pluginName] = $this->loadPlugin($pluginName);
         }
     }
 
@@ -76,7 +104,7 @@ class PluginLoader
      */
     private function loadPlugin(string $pluginName): ?PluginInterface
     {
-        $classPath = $this->kernel->getRootDir() . '/../plugins/' . $pluginName . '/' . $pluginName . '.php';
+        $classPath = $this->pluginBasePath . '/' . $pluginName . '/' . $pluginName . '.php';
 
         if (!file_exists($classPath)) {
             $this->logger->error('Could not find ' . $pluginName . '.php for Plugin');

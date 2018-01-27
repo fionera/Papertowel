@@ -11,19 +11,19 @@ use App\Entity\Language;
 use App\Entity\Website;
 use App\Service\Language\LanguageProvider;
 use App\Service\Theme\ThemeProvider;
-use App\Service\WebsiteProvider\WebsiteProvider;
+use App\Service\Website\WebsiteProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class PluginController extends Controller
 {
     /**
-     * @var WebsiteProvider
+     * @var LanguageProvider
      */
     private $websiteProvider;
 
     /**
-     * @var ThemeProvider
+     * @var LanguageProvider
      */
     private $themeProvider;
 

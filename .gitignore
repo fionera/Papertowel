@@ -1,6 +1,8 @@
 .env
-templates/*
-!templates/Base
+themes/*
+!themes/Base
+
+plugins/*
 
 # Created by https://www.gitignore.io/api/symfony,composer,intellij
 
