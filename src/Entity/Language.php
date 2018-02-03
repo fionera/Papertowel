@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\LanguageRepository")
+ * @ORM\Entity()
  */
 class Language
 {
@@ -26,7 +26,9 @@ class Language
 
     /**
      * @ORM\Column(type="integer", name="translation_id")
-     * @var Translation $name
+     * @ORM\OneToOne(targetEntity="App\Entity\Translation")
+     * @ORM\JoinColumns(value={@ORM\JoinColumn(name="translation_id", referencedColumnName="translation_id"), @ORM\JoinColumn(name="id", referencedColumnName="language_id")})
+     * @var int
      */
     private $name;
 
@@ -60,7 +62,7 @@ class Language
     /**
      * @return Translation
      */
-    public function getName(): Translation
+    public function getName() //TODO: Add Translation return type
     {
         return $this->name;
     }

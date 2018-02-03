@@ -34,7 +34,7 @@ class PluginProvider
     private $plugins = null;
 
     /** @var bool Already tried to load Plugins? */
-    private $booted = false;
+    private $loaded = false;
 
     /**
      * LanguageProvider constructor.
@@ -54,9 +54,17 @@ class PluginProvider
      */
     public function getPluginList(): array
     {
-        $this->bootPluginLoader();
-
         return $this->plugins ?? [];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getPluginNames(): array
+    {
+        return array_map(function ($pluginFolder) {
+            return basename($pluginFolder);
+        }, $this->getAllPluginFolders());
     }
 
     /**
@@ -65,28 +73,24 @@ class PluginProvider
      */
     public function getPlugin(string $pluginName): ?PluginInterface
     {
-        $this->bootPluginLoader();
-
-        return $this->plugins[$pluginName];
-    }
-
-    private function bootPluginLoader(): void
-    {
-        if (!$this->booted) {
-            $this->loadAllPlugins();
-
-            $this->booted = true;
-        }
+        return $this->loaded === true ? $this->plugins[$pluginName] : null;
     }
 
     /**
-     * @throws \LogicException
+     * @param string $pluginName
      */
-    private function loadAllPlugins(): void
+    public function loadPlugin(string $pluginName): void
     {
-        foreach ($this->getAllPluginFolders() as $pluginFolder) {
-            $pluginName = basename($pluginFolder);
-            $this->plugins[$pluginName] = $this->loadPlugin($pluginName);
+        $this->plugins[$pluginName] = $this->loadPluginFromDisk($pluginName);
+    }
+
+    /**
+     * @param array $pluginNames
+     */
+    public function loadPlugins(array $pluginNames = []): void
+    {
+        foreach ($pluginNames as $pluginName) {
+            $this->loadPlugin($pluginName);
         }
     }
 
@@ -102,7 +106,7 @@ class PluginProvider
      * @param string $pluginName
      * @return PluginInterface|null
      */
-    private function loadPlugin(string $pluginName): ?PluginInterface
+    private function loadPluginFromDisk(string $pluginName): ?PluginInterface
     {
         $classPath = $this->pluginBasePath . '/' . $pluginName . '/' . $pluginName . '.php';
 

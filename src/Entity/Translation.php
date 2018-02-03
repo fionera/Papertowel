@@ -24,8 +24,8 @@ class Translation
     private $translationId;
 
     /**
-     * @ORM\Column(type="string", name="language_id")
      * @ORM\ManyToOne(targetEntity="Language")
+     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      * @var string $language
      */
     private $language;

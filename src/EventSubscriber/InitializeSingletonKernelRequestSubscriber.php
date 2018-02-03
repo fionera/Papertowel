@@ -2,6 +2,7 @@
 
 namespace App\EventSubscriber;
 
+use App\Component\Plugin\PluginInterface;
 use App\Entity\Website;
 use App\Papertowel;
 use App\Service\Plugin\PluginProvider;
@@ -65,11 +66,28 @@ class InitializeSingletonKernelRequestSubscriber implements EventSubscriberInter
             }
 
             {
-                $pluginList = $this->pluginProvider->getPluginList();
+                $pluginList = $this->pluginProvider->getPluginNames();
+                $websitePluginStates = $requestedWebsite->getPluginStates();
 
-                foreach ($pluginList as $plugin) {
-                    echo $plugin->getDescription();
+                foreach ($websitePluginStates as $pluginState) {
+                    if (!$pluginState->isInstalled() || !$pluginState->isEnabled()) {
+                        continue;
+                    }
+
+                    $plugin = $pluginState->getPlugin();
+
+                    if (!isset($pluginList[$plugin->getName()])) {
+                        throw new \RuntimeException('Missing Plugin: ' . $plugin->getName());
+                    }
+
+                    if ($pluginState->isInstalled() || $pluginState->isEnabled()) {
+                        $this->pluginProvider->loadPlugin($pluginState->getPlugin()->getName());
+                    }
                 }
+
+                array_map(function (PluginInterface $plugin) {
+                    echo $plugin->getName();
+                }, $this->pluginProvider->getPluginList());
             }
 
             {
