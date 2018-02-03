@@ -9,6 +9,8 @@ use App\Service\Language\LanguageProvider;
 use App\Service\Theme\ThemeProvider;
 use App\Service\Theme\ThemeVariables;
 use App\Service\Website\WebsiteProvider;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -171,25 +173,7 @@ class SetVariablesKernelRequestSubscriber implements EventSubscriberInterface
      */
     public function getLanguagesForWebsite(): array
     {
-        /** @var string $supportedLanguages */
         $supportedLanguages = $this->website->getSupportedLanguages();
-
-        //TODO: Replace with fancy Array Code
-        {
-            $languageIDs = explode(';', $supportedLanguages[0]);
-
-            /** @var Language[] $languages */
-            $languages = $this->registry->getRepository(Language::class)->findAll();
-
-            /** @var Language[] $supportedLanguages */
-            $supportedLanguages = [];
-            /** @var Language $language */
-            foreach ($languages as $language) {
-                if (\in_array($language->getId(), $languageIDs, true)) {
-                    $supportedLanguages[] = $language;
-                }
-            }
-        }
 
         $languageArray = ['selectedLanguage' => '', 'availableLanguages' => []];
         foreach ($supportedLanguages as $supportedLanguage) {
