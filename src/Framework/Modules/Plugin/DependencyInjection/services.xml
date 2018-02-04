@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="Papertowel\Framework\Modules\Plugin\PluginProvider" autowire="true" public="false">
+            <argument type="service" id="logger"/>
+            <argument type="string">%kernel.project_dir%/plugins</argument>
+        </service>
+        <service id="papertowel.framework.plugin.plugin_provider" alias="Papertowel\Framework\Modules\Plugin\PluginProvider"/>
+
+        <service id="Papertowel\Framework\Modules\Plugin\Command\PluginDisableCommand" autowire="true" public="false">
+            <tag name="console.command"/>
+        </service>
+        <service id="Papertowel\Framework\Modules\Plugin\Command\PluginEnableCommand" autowire="true" public="false">
+            <tag name="console.command"/>
+        </service>
+        <service id="Papertowel\Framework\Modules\Plugin\Command\PluginInstallCommand" autowire="true" public="false">
+            <tag name="console.command"/>
+        </service>
+        <service id="Papertowel\Framework\Modules\Plugin\Command\PluginUninstallCommand" autowire="true" public="false">
+            <tag name="console.command"/>
+        </service>
+
+    </services>
+</container>
