@@ -3,7 +3,7 @@
  * Coded by fionera.
  */
 
-namespace App\Component\Theme;
+namespace Papertowel\Component\Theme;
 
 class ThemeNotFoundException extends \Exception {
 

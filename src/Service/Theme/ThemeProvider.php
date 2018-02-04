@@ -1,20 +1,14 @@
 <?php
 
-namespace App\Service\Theme;
+namespace Papertowel\Service\Theme;
 
-use App\Component\Theme\ThemeInterface;
-use App\Component\Theme\ThemeNotFoundException;
-use App\Service\WebsiteProvider\WebsiteProvider;
+use Papertowel\Component\Theme\ThemeInterface;
+use Papertowel\Component\Theme\ThemeNotFoundException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class ThemeProvider
 {
-    /**
-     * @var WebsiteProvider
-     */
-    private $websiteProvider;
-
     /**
      * @var LoggerInterface
      */
@@ -28,31 +22,32 @@ class ThemeProvider
     /**
      * @var string
      */
-    private $templateBasePath;
-
-
-    private $themes = [];
-
+    private $themeBasePath;
 
     /**
-     * ThemeProvider constructor.
-     * @param WebsiteProvider $websiteProvider
+     * A cache for all Themes
+     * @var ThemeInterface[]
+     */
+    private $themes = [];
+
+    /**
+     * LanguageProvider constructor.
      * @param LoggerInterface $logger
      * @param KernelInterface $kernel
-     * @param string $templateBasePath
+     * @param string $themeBasePath
      */
-    public function __construct(WebsiteProvider $websiteProvider, LoggerInterface $logger, KernelInterface $kernel, string $templateBasePath)
+    public function __construct(LoggerInterface $logger, KernelInterface $kernel, string $themeBasePath)
     {
-        $this->websiteProvider = $websiteProvider;
         $this->logger = $logger;
         $this->kernel = $kernel;
-        $this->templateBasePath = $templateBasePath;
+        $this->themeBasePath = $themeBasePath;
     }
 
     /**
      * @param ThemeInterface $theme
      * @return string[]
      * @throws \LogicException
+     * @throws ThemeNotFoundException
      */
     public function getDependencyNames(ThemeInterface $theme): array
     {
@@ -70,6 +65,7 @@ class ThemeProvider
      * @param ThemeInterface $theme
      * @return ThemeInterface[]
      * @throws \LogicException
+     * @throws ThemeNotFoundException
      */
     public function getDependencyThemes(ThemeInterface $theme): array
     {
@@ -98,18 +94,6 @@ class ThemeProvider
         }
 
         return $this->getAllThemeFoldersWithName()[$themeName];
-    }
-
-    /**
-     * @return ThemeInterface
-     * @throws \App\Component\Theme\ThemeNotFoundException
-     * @throws \LogicException
-     */
-    public function getThemeForCurrentRequest(): ThemeInterface
-    {
-        $website = $this->websiteProvider->getWebsite();
-
-        return $this->getThemeByName($website->getThemeName());
     }
 
     /**
@@ -157,7 +141,7 @@ class ThemeProvider
      */
     private function getAllThemeFolders(): array
     {
-        return glob($this->templateBasePath . '/*', GLOB_ONLYDIR);
+        return glob($this->themeBasePath . '/*', GLOB_ONLYDIR);
     }
 
     /**
@@ -166,8 +150,7 @@ class ThemeProvider
      */
     private function loadTheme(string $themeName): ?ThemeInterface
     {
-        $classPath = $this->kernel->getRootDir() . '/../templates/' . $themeName . '/Theme.php';
-        //$classPath = '../../../templates/Base/Theme.php';
+        $classPath = $this->themeBasePath . '/' . $themeName . '/Theme.php';
 
         if (!file_exists($classPath)) {
             $this->logger->error('Could not find Theme.php for Theme: "' . $themeName . '"');

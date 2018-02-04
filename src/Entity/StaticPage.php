@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Entity;
+namespace Papertowel\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\StaticPageRepository")
+ * @ORM\Entity()
  */
 class StaticPage
 {

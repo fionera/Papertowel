@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Component\Theme;
+namespace Papertowel\Component\Theme;
 
 abstract class Theme implements ThemeInterface
 {

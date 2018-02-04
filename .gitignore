@@ -1,6 +1,8 @@
 .env
-templates/*
-!templates/Base
+themes/*
+!themes/Base
+
+plugins/*
 
 # Created by https://www.gitignore.io/api/symfony,composer,intellij
 
@@ -130,3 +132,7 @@ fabric.properties
 ###> maba/webpack-bundle ###
 /node_modules/
 ###< maba/webpack-bundle ###
+
+###> symfony/web-server-bundle ###
+.web-server-pid
+###< symfony/web-server-bundle ###

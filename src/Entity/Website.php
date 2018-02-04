@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Entity;
+namespace Papertowel\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
+use Symfony\Component\DependencyInjection\Tests\Compiler\CollisionInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\WebsiteRepository")
+ * @ORM\Entity(repositoryClass="Papertowel\Repository\WebsiteRepository")
  * @ORM\Table(name="website", uniqueConstraints={@UniqueConstraint(name="parent_domain", columns={"parent_id", "domain"})})
  */
 class Website
@@ -21,7 +23,7 @@ class Website
 
     /**
      * @ORM\Column(type="integer", name="parent_id", nullable=true)
-     * @ORM\ManyToOne(targetEntity="App\Entity\Website")
+     * @ORM\OneToOne(targetEntity="Papertowel\Entity\Website")
      * @var Website|null $parent
      */
     private $parent;
@@ -33,15 +35,19 @@ class Website
     private $domain;
 
     /**
-     * @ORM\Column(type="simple_array", name="supported_languages")
-     * @var Language[]
+     * @ORM\ManyToMany(targetEntity="Papertowel\Entity\Language")
+     * @ORM\JoinTable(name="supported_languages",
+     *      joinColumns={@ORM\JoinColumn(name="website_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="language_id", referencedColumnName="id", unique=true)}
+     *      )
+     * @var Language[]|Collection
      */
-    private $supportedLanguages; //TODO: Get LanguageObjects by id array
+    private $supportedLanguages;
 
     /**
+     * @ORM\Column(type="integer", name="default_language_id", nullable=true)
+     * @ORM\OneToOne(targetEntity="Papertowel\Entity\Language")
      * @var Language $defaultLanguage
-     * @ORM\Column(type="integer", name="default_language_id")
-     * @ORM\ManyToOne(targetEntity="App\Entity\Translation")
      */
     private $defaultLanguage;
 
@@ -53,9 +59,17 @@ class Website
 
     /**
      * @ORM\Column(type="integer", name="translation_id")
+     * @ORM\OneToOne(targetEntity="Papertowel\Entity\Translation")
+     * @ORM\JoinColumns(value={@ORM\JoinColumn(name="translation_id", referencedColumnName="translation_id"), @ORM\JoinColumn(name="default_language_id", referencedColumnName="language_id")})
      * @var int
      */
-    private $pageTitle;//TODO: Get the correct Translation Object
+    private $pageTitle;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Papertowel\Entity\PluginState", mappedBy="website")
+     * @var PluginState[]
+     */
+    private $pluginStates;
 
     /**
      * Website constructor.
@@ -65,8 +79,9 @@ class Website
      * @param Language $defaultLanguage
      * @param Language[]|null $supportedLanguages
      * @param Website|null $parent
+     * @param array $pluginStates
      */
-    public function __construct(string $domain, string $themeName, int $pageTitle, Language $defaultLanguage, $supportedLanguages = [], $parent = null)
+    public function __construct(string $domain, string $themeName, int $pageTitle, Language $defaultLanguage, array $supportedLanguages = [], $parent = null, array $pluginStates = [])
     {
         $this->domain = $domain;
         $this->parent = $parent;
@@ -74,6 +89,7 @@ class Website
         $this->pageTitle = $pageTitle;
         $this->defaultLanguage = $defaultLanguage;
         $this->supportedLanguages = $supportedLanguages;
+        $this->pluginStates = $pluginStates;
     }
 
     /**
@@ -133,9 +149,9 @@ class Website
     }
 
     /**
-     * @return Language[]
+     * @return Language[]|Collection
      */
-    public function getSupportedLanguages(): array
+    public function getSupportedLanguages()
     {
         return $this->supportedLanguages;
     }
@@ -178,6 +194,14 @@ class Website
     public function getDefaultLanguage(): Language
     {
         return $this->defaultLanguage;
+    }
+
+    /**
+     * @return PluginState[]
+     */
+    public function getPluginStates(): Collection
+    {
+        return $this->pluginStates;
     }
 
     /**

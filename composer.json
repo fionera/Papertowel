@@ -11,10 +11,11 @@
     "symfony/framework-bundle": "^4.0",
     "symfony/lts": "^4@dev",
     "symfony/maker-bundle": "^1.0",
+    "symfony/monolog-bridge": "^4.0",
     "symfony/orm-pack": "^1.0",
     "symfony/twig-bundle": "^4.0",
-    "symfony/yaml": "^4.0",
-    "symfony/monolog-bridge": "^4.0"
+    "symfony/web-server-bundle": "^4.0",
+    "symfony/yaml": "^4.0"
   },
   "require-dev": {
     "symfony/dotenv": "^4.0"
@@ -27,12 +28,12 @@
   },
   "autoload": {
     "psr-4": {
-      "App\\": "src/"
+      "Papertowel\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "App\\Tests\\": "tests/"
+      "Papertowel\\Tests\\": "tests/"
     }
   },
   "replace": {

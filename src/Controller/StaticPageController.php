@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Controller;
+namespace Papertowel\Controller;
 
-use App\Component\Theme\Theme;
-use App\Component\Theme\ThemeInterface;
+use Papertowel\Component\Theme\Theme;
+use Papertowel\Component\Theme\ThemeInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,7 +21,6 @@ class StaticPageController extends Controller
      */
     public function indexAction($id)
     {
-
         //die(print_r($this->container->get('twig')->getLoader()->getPaths('__main__')));
         return $this->render('frontend/index/index.html.twig', array(
             'number' => $id,

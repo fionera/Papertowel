@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository;
+namespace Papertowel\Repository;
 
-use App\Entity\Website;
+use Papertowel\Entity\Website;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

@@ -3,10 +3,10 @@
  * Coded by fionera.
  */
 
-namespace App\Service\Language;
+namespace Papertowel\Service\Language;
 
-use App\Entity\Language;
-use App\Service\WebsiteProvider\WebsiteProvider;
+use Papertowel\Entity\Language;
+use Papertowel\Service\Website\WebsiteProvider;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Twig\Environment;
@@ -32,7 +32,7 @@ class LanguageVariables
 
     /**
      * LanguageVariables constructor.
-     * @param WebsiteProvider $websiteProvider
+     * @param LanguageProvider $websiteProvider
      * @param LanguageProvider $languageProvider
      * @param Environment $environment
      * @param ContainerInterface $container
@@ -45,43 +45,6 @@ class LanguageVariables
         $this->container = $container;
     }
 
-
-    public function assignLanguageVariables(): void
-    {
-        $this->environment->addGlobal('translation', $this->getLanguagesForWebsite());
-    }
-
-
-    public function getLanguagesForWebsite()
-    {
-        /** @var string $supportedLanguages */
-        $supportedLanguages = $this->websiteProvider->getWebsite()->getSupportedLanguages();
-
-        //TODO: Replace with fancy Array Code
-        {
-            $em = $this->container->get('doctrine.orm.entity_manager');
-            $languageIDs = explode(';', $supportedLanguages[0]);
-
-            /** @var Language[] $languages */
-            $languages = $em->getRepository(Language::class)->findAll();
-
-            /** @var Language[] $supportedLanguages */
-            $supportedLanguages = [];
-            /** @var Language $language */
-            foreach ($languages as $language) {
-                if (in_array($language->getId(), $languageIDs)) {
-                    $supportedLanguages[] = $language;
-                }
-            }
-        }
-
-        $languageArray = ['selectedLanguage' => '', 'availableLanguages' => []];
-        foreach ($supportedLanguages as $supportedLanguage) {
-            $languageArray['availableLanguages'][$supportedLanguage->getLanguageString()] = $supportedLanguage->getName();
-        }
-
-        return $languageArray;
-    }
 
 
 }

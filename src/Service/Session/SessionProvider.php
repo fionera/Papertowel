@@ -3,9 +3,7 @@
  * Coded by fionera.
  */
 
-
-namespace App\Service\Session;
-
+namespace Papertowel\Service\Session;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -20,7 +18,7 @@ class SessionProvider
 
 
     /**
-     * SessionProvider constructor.
+     * LanguageProvider constructor.
      * @param RequestStack $requestStack
      */
     public function __construct(RequestStack $requestStack)
