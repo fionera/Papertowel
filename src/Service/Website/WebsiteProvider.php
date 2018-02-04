@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Service\Website;
+namespace Papertowel\Service\Website;
 
-use App\Entity\Website;
+use Papertowel\Entity\Website;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -43,10 +43,10 @@ class WebsiteProvider
         $requestDomain = $this->extractDomain($request->getHost());
         $requestSubDomain = $this->extractSubDomains($request->getHost());
 
-        $website = $this->doctrine->getRepository('App:Website')->findWebsiteBySubAndDomain($requestSubDomain, $requestDomain);
+        $website = $this->doctrine->getRepository(Website::class)->findWebsiteBySubAndDomain($requestSubDomain, $requestDomain);
 
         if ($website === null) {
-            $website = $this->doctrine->getRepository('App:Website')->findWebsiteByDomain($requestDomain);
+            $website = $this->doctrine->getRepository(Website::class)->findWebsiteByDomain($requestDomain);
             $this->logger->debug('Using Domain');
         }
 

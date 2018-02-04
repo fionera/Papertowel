@@ -1,14 +1,14 @@
 <?php
 
-namespace App\EventSubscriber;
+namespace Papertowel\EventSubscriber;
 
-use App\Component\Theme\ThemeInterface;
-use App\Entity\Language;
-use App\Entity\Website;
-use App\Service\Language\LanguageProvider;
-use App\Service\Theme\ThemeProvider;
-use App\Service\Theme\ThemeVariables;
-use App\Service\Website\WebsiteProvider;
+use Papertowel\Component\Theme\ThemeInterface;
+use Papertowel\Entity\Language;
+use Papertowel\Entity\Website;
+use Papertowel\Service\Language\LanguageProvider;
+use Papertowel\Service\Theme\ThemeProvider;
+use Papertowel\Service\Theme\ThemeVariables;
+use Papertowel\Service\Website\WebsiteProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -74,7 +74,7 @@ class SetVariablesKernelRequestSubscriber implements EventSubscriberInterface
      * @param GetResponseEvent $event
      * @throws \LogicException
      * @throws \Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException
-     * @throws \App\Component\Theme\ThemeNotFoundException
+     * @throws \Papertowel\Component\Theme\ThemeNotFoundException
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
@@ -100,7 +100,7 @@ class SetVariablesKernelRequestSubscriber implements EventSubscriberInterface
     /**
      * @return void
      * @throws \LogicException
-     * @throws \App\Component\Theme\ThemeNotFoundException
+     * @throws \Papertowel\Component\Theme\ThemeNotFoundException
      */
     public function assignTemplateVariables(): void
     {
@@ -118,7 +118,7 @@ class SetVariablesKernelRequestSubscriber implements EventSubscriberInterface
     /**
      * @return array
      * @throws \LogicException
-     * @throws \App\Component\Theme\ThemeNotFoundException
+     * @throws \Papertowel\Component\Theme\ThemeNotFoundException
      */
     public function getTemplateVariables(): array
     {

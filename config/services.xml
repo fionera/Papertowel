@@ -5,61 +5,60 @@
 
     <services>
         <defaults autowire="true" autoconfigure="true" public="false"/>
-        <prototype namespace="App\" resource="../src/*"
+        <prototype namespace="Papertowel\" resource="../src/*"
                    exclude="../src/{Entity,Migration,Tests,Service,Bundles}"/>
 
         <!--suppress XmlServiceArgumentInspection -->
-        <service id="website" synthetic="true" public="true" class="App\Entity\Website" autowire="false">
+        <service id="website" synthetic="true" public="true" class="Papertowel\Entity\Website" autowire="false">
         </service>
 
         <!--suppress XmlServiceArgumentInspection -->
-        <service id="theme" synthetic="true" public="true" class="App\Component\Theme\ThemeInterface" autowire="false">
+        <service id="theme" synthetic="true" public="true" class="Papertowel\Component\Theme\ThemeInterface" autowire="false">
         </service>
 
 
-        <service id="App\Service\Theme\ThemeProvider" autowire="true" public="true">
+        <service id="Papertowel\Service\Theme\ThemeProvider" autowire="true" public="true">
             <argument type="service" id="logger"/>
             <argument type="service" id="kernel"/>
             <argument type="string">%kernel.project_dir%/themes</argument>
         </service>
-        <service id="app.service.theme.provider" alias="App\Service\Theme\ThemeProvider"/>
+        <service id="papertowel.service.theme.provider" alias="Papertowel\Service\Theme\ThemeProvider"/>
 
-        <service id="App\Service\Plugin\PluginProvider" autowire="true" public="true">
+        <service id="Papertowel\Service\Plugin\PluginProvider" autowire="true" public="true">
             <argument type="service" id="logger"/>
-            <argument type="service" id="kernel"/>
             <argument type="string">%kernel.project_dir%/plugins</argument>
         </service>
-        <service id="app.service.plugin.provider" alias="App\Service\Plugin\PluginProvider"/>
+        <service id="papertowel.service.plugin.provider" alias="Papertowel\Service\Plugin\PluginProvider"/>
 
-        <service id="App\Service\Website\WebsiteProvider" autowire="true" public="true">
+        <service id="Papertowel\Service\Website\WebsiteProvider" autowire="true" public="true">
             <argument type="service" id="doctrine"/>
             <argument type="service" id="logger"/>
         </service>
-        <service id="app.service.website.provider" alias="App\Service\Website\WebsiteProvider"/>
+        <service id="papertowel.service.website.provider" alias="Papertowel\Service\Website\WebsiteProvider"/>
 
-        <service id="App\Service\Language\LanguageProvider" autowire="false" public="true">
+        <service id="Papertowel\Service\Language\LanguageProvider" autowire="false" public="true">
             <argument type="service" id="doctrine"/>
             <argument type="service" id="logger"/>
-            <argument type="service" id="App\Service\Session\SessionProvider"/>
+            <argument type="service" id="Papertowel\Service\Session\SessionProvider"/>
         </service>
-        <service id="app.service.language.provider" alias="App\Service\Language\LanguageProvider"/>
+        <service id="papertowel.service.language.provider" alias="Papertowel\Service\Language\LanguageProvider"/>
 
-        <service id="App\Service\Session\SessionProvider" autowire="true" public="true">
+        <service id="Papertowel\Service\Session\SessionProvider" autowire="true" public="true">
             <argument type="service" id="request_stack"/>
         </service>
-        <service id="app.service.session.session_provider" alias="App\Service\Session\SessionProvider"/>
+        <service id="papertowel.service.session.session_provider" alias="Papertowel\Service\Session\SessionProvider"/>
 
 
 
-        <service id="App\Service\Language\LanguageVariables" autowire="true" public="true">
-            <argument type="service" id="App\Service\Website\WebsiteProvider"/>
-            <argument type="service" id="App\Service\Language\LanguageProvider"/>
+        <service id="Papertowel\Service\Language\LanguageVariables" autowire="true" public="true">
+            <argument type="service" id="Papertowel\Service\Website\WebsiteProvider"/>
+            <argument type="service" id="Papertowel\Service\Language\LanguageProvider"/>
             <argument type="service" id="twig"/>
             <argument type="service" id="service_container"/>
         </service>
-        <service id="app.service.language.variables" alias="App\Service\Language\LanguageVariables"/>
+        <service id="papertowel.service.language.variables" alias="Papertowel\Service\Language\LanguageVariables"/>
 
-        <prototype namespace="App\Controller\" resource="../src/Controller">
+        <prototype namespace="Papertowel\Controller\" resource="../src/Controller">
             <!--<argument type="service" id="service_container"/>-->
         </prototype>
     </services>

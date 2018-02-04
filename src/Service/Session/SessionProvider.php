@@ -3,7 +3,7 @@
  * Coded by fionera.
  */
 
-namespace App\Service\Session;
+namespace Papertowel\Service\Session;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;

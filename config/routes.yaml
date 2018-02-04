@@ -1,3 +1,3 @@
 #index:
 #    path: /staticPage/index
-#    defaults: { _controller: 'App\Controller\StaticPageController::index' }
+#    defaults: { _controller: 'Papertowel\Controller\StaticPageController::index' }

@@ -3,15 +3,15 @@
  * Coded by fionera.
  */
 
-namespace App\Component\Plugin\Controller;
+namespace Papertowel\Component\Plugin\Controller;
 
-use App\Component\Theme\ThemeInterface;
-use App\Component\Theme\ThemeNotFoundException;
-use App\Entity\Language;
-use App\Entity\Website;
-use App\Service\Language\LanguageProvider;
-use App\Service\Theme\ThemeProvider;
-use App\Service\Website\WebsiteProvider;
+use Papertowel\Component\Theme\ThemeInterface;
+use Papertowel\Component\Theme\ThemeNotFoundException;
+use Papertowel\Entity\Language;
+use Papertowel\Entity\Website;
+use Papertowel\Service\Language\LanguageProvider;
+use Papertowel\Service\Theme\ThemeProvider;
+use Papertowel\Service\Website\WebsiteProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

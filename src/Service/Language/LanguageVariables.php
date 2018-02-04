@@ -3,10 +3,10 @@
  * Coded by fionera.
  */
 
-namespace App\Service\Language;
+namespace Papertowel\Service\Language;
 
-use App\Entity\Language;
-use App\Service\Website\WebsiteProvider;
+use Papertowel\Entity\Language;
+use Papertowel\Service\Website\WebsiteProvider;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Twig\Environment;

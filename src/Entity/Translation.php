@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Entity;
+namespace Papertowel\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\TranslationRepository")
+ * @ORM\Entity(repositoryClass="Papertowel\Repository\TranslationRepository")
  * @ORM\Table(name="translation", uniqueConstraints={@UniqueConstraint(name="translation", columns={"translation_id", "language_id"})})
  */
 class Translation

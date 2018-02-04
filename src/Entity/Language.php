@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace Papertowel\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
@@ -26,7 +26,7 @@ class Language
 
     /**
      * @ORM\Column(type="integer", name="translation_id")
-     * @ORM\OneToOne(targetEntity="App\Entity\Translation")
+     * @ORM\OneToOne(targetEntity="Papertowel\Entity\Translation")
      * @ORM\JoinColumns(value={@ORM\JoinColumn(name="translation_id", referencedColumnName="translation_id"), @ORM\JoinColumn(name="id", referencedColumnName="language_id")})
      * @var int
      */
