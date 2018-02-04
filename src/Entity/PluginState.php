@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace Papertowel\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,13 +18,13 @@ class PluginState
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Website", inversedBy="pluginStates")
+     * @ORM\ManyToOne(targetEntity="Papertowel\Entity\Website", inversedBy="pluginStates")
      * @var Website
      */
     private $website;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Plugin")
+     * @ORM\ManyToOne(targetEntity="Papertowel\Entity\Plugin")
      * @ORM\JoinColumn(name="plugin_id", referencedColumnName="id")
      * @var Plugin
      */

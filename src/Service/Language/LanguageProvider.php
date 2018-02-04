@@ -3,11 +3,11 @@
  * Coded by fionera.
  */
 
-namespace App\Service\Language;
+namespace Papertowel\Service\Language;
 
-use App\Entity\Language;
-use App\Entity\Translation;
-use App\Service\Session\SessionProvider as SessionProvider;
+use Papertowel\Entity\Language;
+use Papertowel\Entity\Translation;
+use Papertowel\Service\Session\SessionProvider as SessionProvider;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bridge\Doctrine\RegistryInterface;

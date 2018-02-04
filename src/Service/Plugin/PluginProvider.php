@@ -4,10 +4,10 @@
  * Coded by fionera.
  */
 
-namespace App\Service\Plugin;
+namespace Papertowel\Service\Plugin;
 
 
-use App\Component\Plugin\PluginInterface;
+use Papertowel\Component\Plugin\PluginInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -17,11 +17,6 @@ class PluginProvider
      * @var LoggerInterface
      */
     private $logger;
-
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
 
     /**
      * @var string
@@ -39,13 +34,11 @@ class PluginProvider
     /**
      * LanguageProvider constructor.
      * @param LoggerInterface $logger
-     * @param KernelInterface $kernel
      * @param string $pluginBasePath
      */
-    public function __construct(LoggerInterface $logger, KernelInterface $kernel, string $pluginBasePath)
+    public function __construct(LoggerInterface $logger, string $pluginBasePath)
     {
         $this->logger = $logger;
-        $this->kernel = $kernel;
         $this->pluginBasePath = $pluginBasePath;
     }
 

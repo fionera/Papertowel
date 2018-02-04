@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repository;
+namespace Papertowel\Repository;
 
-use App\Entity\Language;
-use App\Entity\Translation;
+use Papertowel\Entity\Language;
+use Papertowel\Entity\Translation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

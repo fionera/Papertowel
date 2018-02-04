@@ -4,7 +4,7 @@
  * Coded by fionera.
  */
 
-namespace App\Service\Plugin;
+namespace Papertowel\Service\Plugin;
 
 
 class PluginTemplateLoader

@@ -4,13 +4,13 @@
  */
 
 
-namespace App\Service\Plugin;
+namespace Papertowel\Service\Plugin;
 
 
-use App\Component\Plugin\PluginInterface;
-use App\Entity\Plugin;
-use App\Entity\PluginState;
-use App\Entity\Website;
+use Papertowel\Component\Plugin\PluginInterface;
+use Papertowel\Entity\Plugin;
+use Papertowel\Entity\PluginState;
+use Papertowel\Entity\Website;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Service\Theme;
+namespace Papertowel\Service\Theme;
 
-use App\Component\Theme\ThemeInterface;
-use App\Component\Theme\ThemeNotFoundException;
+use Papertowel\Component\Theme\ThemeInterface;
+use Papertowel\Component\Theme\ThemeNotFoundException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 

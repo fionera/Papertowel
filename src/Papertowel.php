@@ -6,11 +6,11 @@
  * Time: 20:24
  */
 
-namespace App;
+namespace Papertowel;
 
 
-use App\Component\Theme\ThemeInterface;
-use App\Entity\Website;
+use Papertowel\Component\Theme\ThemeInterface;
+use Papertowel\Entity\Website;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Twig\Environment;

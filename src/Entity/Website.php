@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace Papertowel\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
 use Symfony\Component\DependencyInjection\Tests\Compiler\CollisionInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\WebsiteRepository")
+ * @ORM\Entity(repositoryClass="Papertowel\Repository\WebsiteRepository")
  * @ORM\Table(name="website", uniqueConstraints={@UniqueConstraint(name="parent_domain", columns={"parent_id", "domain"})})
  */
 class Website
@@ -23,7 +23,7 @@ class Website
 
     /**
      * @ORM\Column(type="integer", name="parent_id", nullable=true)
-     * @ORM\OneToOne(targetEntity="App\Entity\Website")
+     * @ORM\OneToOne(targetEntity="Papertowel\Entity\Website")
      * @var Website|null $parent
      */
     private $parent;
@@ -35,7 +35,7 @@ class Website
     private $domain;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Language")
+     * @ORM\ManyToMany(targetEntity="Papertowel\Entity\Language")
      * @ORM\JoinTable(name="supported_languages",
      *      joinColumns={@ORM\JoinColumn(name="website_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="language_id", referencedColumnName="id", unique=true)}
@@ -46,7 +46,7 @@ class Website
 
     /**
      * @ORM\Column(type="integer", name="default_language_id", nullable=true)
-     * @ORM\OneToOne(targetEntity="App\Entity\Language")
+     * @ORM\OneToOne(targetEntity="Papertowel\Entity\Language")
      * @var Language $defaultLanguage
      */
     private $defaultLanguage;
@@ -59,14 +59,14 @@ class Website
 
     /**
      * @ORM\Column(type="integer", name="translation_id")
-     * @ORM\OneToOne(targetEntity="App\Entity\Translation")
+     * @ORM\OneToOne(targetEntity="Papertowel\Entity\Translation")
      * @ORM\JoinColumns(value={@ORM\JoinColumn(name="translation_id", referencedColumnName="translation_id"), @ORM\JoinColumn(name="default_language_id", referencedColumnName="language_id")})
      * @var int
      */
     private $pageTitle;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\PluginState", mappedBy="website")
+     * @ORM\OneToMany(targetEntity="Papertowel\Entity\PluginState", mappedBy="website")
      * @var PluginState[]
      */
     private $pluginStates;

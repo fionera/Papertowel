@@ -4,7 +4,7 @@
  */
 
 
-namespace App\Component\Plugin;
+namespace Papertowel\Component\Plugin;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
