@@ -2,12 +2,13 @@
 
 namespace Papertowel\EventSubscriber;
 
-use Papertowel\Component\Plugin\PluginInterface;
-use Papertowel\Entity\Website;
+use Papertowel\Framework\Modules\Plugin\PluginProvider;
+use Papertowel\Framework\Modules\Plugin\Struct\PluginInterface;
+use Papertowel\Framework\Modules\Theme\ThemeProvider;
+use Papertowel\Framework\Modules\Website\Entity\Website;
+use Papertowel\Framework\Modules\Website\WebsiteProvider;
+use Papertowel\Framework\Struct\ArrayList;
 use Papertowel\Papertowel;
-use Papertowel\Service\Plugin\PluginProvider;
-use Papertowel\Service\Theme\ThemeProvider;
-use Papertowel\Service\Website\WebsiteProvider;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -86,8 +87,6 @@ class InitializeSingletonKernelRequestSubscriber implements EventSubscriberInter
                         $this->pluginProvider->loadPlugin($pluginState->getPlugin()->getName());
                     }
                 }
-
-                echo get_class($container);
 
                 array_map(function (PluginInterface $plugin) {
                     echo $plugin->getName();
