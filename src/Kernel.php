@@ -2,6 +2,7 @@
 
 namespace Papertowel;
 
+use Papertowel\Framework\Modules\Plugin\PluginList;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -13,6 +14,15 @@ class Kernel extends BaseKernel
     use MicroKernelTrait;
 
     public const CONFIG_EXTS = '.{php,xml,yaml,yml}';
+
+    private static $plugins;
+
+    public function __construct(string $environment, bool $debug)
+    {
+        parent::__construct($environment, $debug);
+
+        self::$plugins = new PluginList();
+    }
 
     public function getCacheDir()
     {
@@ -33,6 +43,10 @@ class Kernel extends BaseKernel
             if (isset($envs['all']) || isset($envs[$this->environment])) {
                 yield new $class();
             }
+        }
+
+        foreach (self::$plugins->getActivePlugins() as $plugin) {
+            yield $plugin;
         }
     }
 

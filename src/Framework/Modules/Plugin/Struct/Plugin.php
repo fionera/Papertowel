@@ -9,6 +9,27 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class Plugin implements PluginInterface
 {
+    /**
+     * @var bool
+     */
+    private $enabled;
+
+    /**
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param bool $enabled
+     */
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
+    }
+
     public function onInstall(ContainerInterface $container): void
     {
         // Nothing to do
