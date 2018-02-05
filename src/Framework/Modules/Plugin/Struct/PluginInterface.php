@@ -30,6 +30,16 @@ interface PluginInterface
     public function getDescription() : string;
 
     /**
+     * @return bool
+     */
+    public function isEnabled(): bool;
+
+    /**
+     * @param bool $enabled
+     */
+    public function setEnabled(bool $enabled): void;
+
+    /**
      * @param ContainerInterface $container
      */
     public function onInstall(ContainerInterface $container) : void;

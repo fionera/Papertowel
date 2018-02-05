@@ -5,48 +5,71 @@
 
 namespace Papertowel\Framework\Modules\Plugin;
 
+use Papertowel\Framework\Modules\Plugin\Entity\Plugin;
 use Papertowel\Framework\Modules\Plugin\Struct\PluginInterface;
+use Papertowel\Framework\Modules\Website\Entity\Website;
 use Papertowel\Framework\Struct\ListInterface;
 
-class PluginList implements ListInterface
+class PluginList
 {
+    /**
+     * @var PluginInterface[]
+     */
+    private $plugins;
 
-    public function add($object, int $index = -1): void
+    /**
+     * @param PluginInterface $plugin
+     */
+    public function add(PluginInterface $plugin): void
     {
+        $className = get_class($plugin);
+        $className = substr($className, 0, strpos($className, '\\'));
+
+        if ($this->has($className)) {
+            return;
+        }
+
+        $this->plugins[$className] = $plugin;
     }
 
-    public function addAll(array $array, int $index = -1): bool
+    /**
+     * @param PluginInterface[] $array
+     * @return bool
+     */
+    public function addAll(array $array): bool
     {
-        // TODO: Implement addAll() method.
+        foreach ($array as $item) {
+            $this->add($item);
+        }
+
+        return true;
     }
 
-    public function get(int $index)
+    /**
+     * @param string $pluginName
+     * @return PluginInterface|null
+     */
+    public function get(string $pluginName): ?PluginInterface
     {
-        // TODO: Implement get() method.
+        return $this->has($pluginName) ? $this->plugins[$pluginName] : null;
     }
 
-    public function has($object): bool
+    /**
+     * @param $pluginName
+     * @return bool
+     */
+    public function has($pluginName): bool
     {
-
+        return array_key_exists($pluginName, $this->plugins);
     }
 
-    public function indexOf($object): int
+    /**
+     * @return PluginInterface[]
+     */
+    public function getActivePlugins()
     {
-        // TODO: Implement indexOf() method.
-    }
-
-    public function lastIndexOf($object): int
-    {
-        // TODO: Implement lastIndexOf() method.
-    }
-
-    public function remove(int $index)
-    {
-        // TODO: Implement remove() method.
-    }
-
-    public function set($object, int $index)
-    {
-        // TODO: Implement set() method.
+        return array_filter($this->plugins, function (PluginInterface $plugin) {
+            return $plugin->isEnabled();
+        });
     }
 }
