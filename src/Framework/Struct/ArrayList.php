@@ -16,10 +16,10 @@ class ArrayList implements ListInterface
         if ($index === -1) {
             $this->data[] = $object;
         } else {
-            $slice1 = \array_slice($this->data, 0, $index);
+            $slice1 = array_slice($this->data, 0, $index);
             $slice1[] = $object;
 
-            $slice2 = \array_slice($this->data, $index);
+            $slice2 = array_slice($this->data, $index);
 
             $this->data = array_merge($slice1, $slice2);
         }
@@ -34,13 +34,13 @@ class ArrayList implements ListInterface
                 $this->data[] = $item;
             }
         } else {
-            $slice1 = \array_slice($this->data, 0, $index);
+            $slice1 = array_slice($this->data, 0, $index);
 
             foreach ($array as $item) {
                 $slice1[] = $item;
             }
 
-            $slice2 = \array_slice($this->data, $index);
+            $slice2 = array_slice($this->data, $index);
 
             $this->data = array_merge($slice1, $slice2);
         }
@@ -51,6 +51,17 @@ class ArrayList implements ListInterface
     public function get(int $index)
     {
         return $this->data[$index];
+    }
+
+    public function has($object): bool
+    {
+        foreach ($this->data as $item) {
+            if ($item === $object) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function indexOf($object): int
@@ -79,7 +90,7 @@ class ArrayList implements ListInterface
 
     public function remove(int $index)
     {
-        if (\count($this->data) < $index) {
+        if (count($this->data) < $index) {
             return null;
         }
 
@@ -104,7 +115,7 @@ class ArrayList implements ListInterface
         return $previousObject;
     }
 
-    public function getArray() : array
+    public function getArray(): array
     {
         return $this->data;
     }
