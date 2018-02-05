@@ -13,6 +13,8 @@ interface ListInterface
 
     public function get(int $index);
 
+    public function has($object): bool;
+
     public function indexOf($object): int;
 
     public function lastIndexOf($object): int;
