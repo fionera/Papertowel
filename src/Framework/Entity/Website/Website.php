@@ -26,7 +26,8 @@ class Website
 
     /**
      * @ORM\Column(type="integer", name="parent_id", nullable=true)
-     * @ORM\OneToOne(targetEntity="Website")
+     * @ORM\ManyToOne(targetEntity="Papertowel\Framework\Entity\Website\Website")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @var Website|null $parent
      */
     private $parent;
@@ -41,14 +42,14 @@ class Website
      * @ORM\ManyToMany(targetEntity="Papertowel\Framework\Entity\Translation\Language")
      * @ORM\JoinTable(name="supported_languages",
      *      joinColumns={@ORM\JoinColumn(name="website_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="language_id", referencedColumnName="id", unique=true)}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="language_id", referencedColumnName="id")}
      *      )
      * @var Language[]|Collection
      */
     private $supportedLanguages;
 
     /**
-     * @ORM\OneToOne(targetEntity="Papertowel\Framework\Entity\Translation\Language")
+     * @ORM\ManyToOne(targetEntity="Papertowel\Framework\Entity\Translation\Language")
      * @var Language $defaultLanguage
      */
     private $defaultLanguage;
