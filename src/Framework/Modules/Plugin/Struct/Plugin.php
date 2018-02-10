@@ -6,8 +6,9 @@
 namespace Papertowel\Framework\Modules\Plugin\Struct;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-abstract class Plugin implements PluginInterface
+abstract class Plugin extends Bundle implements PluginInterface
 {
     /**
      * @var bool
@@ -15,9 +16,24 @@ abstract class Plugin implements PluginInterface
     private $enabled;
 
     /**
+     * @var string
+     */
+    protected $author;
+
+    /**
+     * @var float
+     */
+    protected $version;
+
+    /**
+     * @var string
+     */
+    protected $description;
+
+    /**
      * @return bool
      */
-    public function isEnabled(): bool
+    final public function isEnabled(): bool
     {
         return $this->enabled;
     }
@@ -25,28 +41,71 @@ abstract class Plugin implements PluginInterface
     /**
      * @param bool $enabled
      */
-    public function setEnabled(bool $enabled): void
+    final public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
     }
 
+    /**
+     * @return string
+     */
+    public function getAuthor(): string
+    {
+        return $this->author;
+    }
+
+    /**
+     * @return float
+     */
+    public function getVersion(): float
+    {
+        return $this->version;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param ContainerInterface $container
+     */
     public function onInstall(ContainerInterface $container): void
     {
         // Nothing to do
     }
 
+    /**
+     * @param ContainerInterface $container
+     */
     public function onEnable(ContainerInterface $container): void
     {
         // Nothing to do
     }
 
+    /**
+     * @param ContainerInterface $container
+     */
     public function onDisable(ContainerInterface $container): void
     {
         // Nothing to do
     }
 
+    /**
+     * @param ContainerInterface $container
+     */
     public function onUninstall(ContainerInterface $container): void
     {
         // Nothing to do
+    }
+
+    //TODO: Remove?
+    //https://stackoverflow.com/questions/1993721/how-to-convert-camelcase-to-camel-case
+    private function camelCaseToUnderscore(string $string): string
+    {
+        return strtolower(ltrim(preg_replace('/[A-Z]([A-Z](?![a-z]))*/', '_$0', $string), '_'));
     }
 }

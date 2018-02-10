@@ -1,9 +1,9 @@
 <?php
 
-namespace Papertowel\Framework\Modules\Plugin\Entity;
+namespace Papertowel\Framework\Entity\Plugin;
 
 use Doctrine\ORM\Mapping as ORM;
-use Papertowel\Framework\Modules\Website\Entity\Website;
+use Papertowel\Framework\Entity\Website\Website;
 
 /**
  * @ORM\Entity
@@ -19,12 +19,14 @@ class PluginState
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Papertowel\Entity\Website", inversedBy="pluginStates")
+     * @ORM\Column(name="website_id", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Papertowel\Framework\Entity\Website\Website", inversedBy="pluginStates")
      * @var Website
      */
     private $website;
 
     /**
+     * @ORM\Column(name="plugin_id", nullable=false)
      * @ORM\ManyToOne(targetEntity="Papertowel\Entity\Plugin")
      * @ORM\JoinColumn(name="plugin_id", referencedColumnName="id")
      * @var Plugin

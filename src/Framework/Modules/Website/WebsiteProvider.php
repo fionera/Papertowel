@@ -2,7 +2,7 @@
 
 namespace Papertowel\Framework\Modules\Website;
 
-use Papertowel\Framework\Modules\Website\Entity\Website;
+use Papertowel\Framework\Entity\Website\Website;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

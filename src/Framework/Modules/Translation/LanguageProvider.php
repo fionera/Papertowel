@@ -5,8 +5,8 @@
 
 namespace Papertowel\Framework\Modules\Translation;
 
-use Papertowel\Framework\Modules\Translation\Entity\Language;
-use Papertowel\Framework\Modules\Translation\Entity\Translation;
+use Papertowel\Framework\Entity\Translation\Language;
+use Papertowel\Framework\Entity\Translation\Translation;
 use Papertowel\Service\Session\SessionProvider as SessionProvider;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;

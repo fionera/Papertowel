@@ -19,5 +19,13 @@
             <argument type="service" id="service_container"/>
         </service>
         <service id="papertowel.framework.translation.language_variables" alias="Papertowel\Framework\Modules\Translation\LanguageVariables"/>
+
+        <service id="Papertowel\Framework\Modules\Translation\Command\ListLanguageCommand" autowire="true" public="false">
+            <tag name="console.command"/>
+        </service>
+
+        <service id="Papertowel\Framework\Modules\Translation\Command\CreateLanguageCommand" autowire="true" public="false">
+            <tag name="console.command"/>
+        </service>
     </services>
 </container>

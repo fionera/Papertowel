@@ -6,9 +6,8 @@
 
 namespace Papertowel\Framework\Modules\Plugin;
 
-
+use Papertowel\Framework\Entity\Website\Website;
 use Papertowel\Framework\Modules\Plugin\Struct\PluginInterface;
-use Papertowel\Framework\Modules\Website\Entity\Website;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

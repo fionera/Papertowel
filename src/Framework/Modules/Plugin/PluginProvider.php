@@ -6,7 +6,6 @@
 
 namespace Papertowel\Framework\Modules\Plugin;
 
-
 use Papertowel\Framework\Modules\Plugin\Struct\PluginInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;

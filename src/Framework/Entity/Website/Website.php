@@ -1,16 +1,17 @@
 <?php
 
-namespace Papertowel\Framework\Modules\Website\Entity;
+namespace Papertowel\Framework\Entity\Website;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
-use Papertowel\Framework\Modules\Plugin\Entity\PluginState;
-use Papertowel\Framework\Modules\Translation\Entity\Language;
-use Symfony\Component\DependencyInjection\Tests\Compiler\CollisionInterface;
+use Papertowel\Framework\Entity\Plugin\PluginState;
+use Papertowel\Framework\Entity\Translation\Language;
+use Papertowel\Framework\Entity\Translation\Translation;
 
 /**
- * @ORM\Entity(repositoryClass="Papertowel\Framework\Modules\Website\Repository\WebsiteRepository")
+ * @ORM\Entity(repositoryClass="Papertowel\Framework\Repository\Website\WebsiteRepository")
  * @ORM\Table(name="website", uniqueConstraints={@UniqueConstraint(name="parent_domain", columns={"parent_id", "domain"})})
  */
 class Website
@@ -37,7 +38,7 @@ class Website
     private $domain;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Papertowel\Framework\Modules\Translation\Entity\Language")
+     * @ORM\ManyToMany(targetEntity="Papertowel\Framework\Entity\Translation\Language")
      * @ORM\JoinTable(name="supported_languages",
      *      joinColumns={@ORM\JoinColumn(name="website_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="language_id", referencedColumnName="id", unique=true)}
@@ -47,8 +48,7 @@ class Website
     private $supportedLanguages;
 
     /**
-     * @ORM\Column(type="integer", name="default_language_id", nullable=true)
-     * @ORM\OneToOne(targetEntity="Papertowel\Framework\Modules\Translation\Entity\Language")
+     * @ORM\OneToOne(targetEntity="Papertowel\Framework\Entity\Translation\Language")
      * @var Language $defaultLanguage
      */
     private $defaultLanguage;
@@ -60,15 +60,15 @@ class Website
     private $themeName;
 
     /**
-     * @ORM\Column(type="integer", name="translation_id")
-     * @ORM\OneToOne(targetEntity="Papertowel\Framework\Modules\Translation\Entity\Translation")
+     * @ORM\OneToOne(targetEntity="Papertowel\Framework\Entity\Translation\Translation")
      * @ORM\JoinColumns(value={@ORM\JoinColumn(name="translation_id", referencedColumnName="translation_id"), @ORM\JoinColumn(name="default_language_id", referencedColumnName="language_id")})
      * @var int
      */
     private $pageTitle;
 
     /**
-     * @ORM\OneToMany(targetEntity="Papertowel\Framework\Modules\Plugin\Entity\PluginState", mappedBy="website")
+     * @ORM\OneToMany(targetEntity="Papertowel\Framework\Entity\Plugin\PluginState", mappedBy="website")
+     * @ORM\JoinColumn(name="id", referencedColumnName="website_id", nullable=true)
      * @var PluginState[]
      */
     private $pluginStates;
@@ -77,21 +77,21 @@ class Website
      * Website constructor.
      * @param string $domain
      * @param string $themeName
-     * @param int $pageTitle
+     * @param Translation $pageTitle
      * @param Language $defaultLanguage
      * @param Language[]|null $supportedLanguages
      * @param Website|null $parent
-     * @param array $pluginStates
+     * @param PluginState[]|null $pluginStates
      */
-    public function __construct(string $domain, string $themeName, int $pageTitle, Language $defaultLanguage, array $supportedLanguages = [], $parent = null, array $pluginStates = [])
+    public function __construct(string $domain, string $themeName, Translation $pageTitle, Language $defaultLanguage, Website $parent = null, $supportedLanguages = null, $pluginStates = null)
     {
         $this->domain = $domain;
         $this->parent = $parent;
         $this->themeName = $themeName;
         $this->pageTitle = $pageTitle;
         $this->defaultLanguage = $defaultLanguage;
-        $this->supportedLanguages = $supportedLanguages;
-        $this->pluginStates = $pluginStates;
+        $this->supportedLanguages = $supportedLanguages ?? [$defaultLanguage];
+        $this->pluginStates = $pluginStates ?? new ArrayCollection();
     }
 
     /**
@@ -175,9 +175,9 @@ class Website
     }
 
     /**
-     * @return int
+     * @return Translation
      */
-    public function getPageTitle(): int
+    public function getPageTitle(): Translation
     {
         return $this->pageTitle;
     }
