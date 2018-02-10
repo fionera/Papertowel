@@ -6,7 +6,15 @@
 
     <services>
         <!--suppress XmlServiceArgumentInspection -->
-        <service id="website" synthetic="true" public="true" class="Papertowel\Framework\Modules\Website\Entity\Website" autowire="false">
+        <service id="website" synthetic="true" public="true" class="Papertowel\Framework\Entity\Website\Website" autowire="false">
+        </service>
+
+        <service id="Papertowel\Framework\Modules\Website\Command\CreateWebsiteCommand" autowire="true" public="false">
+            <tag name="console.command"/>
+        </service>
+
+        <service id="Papertowel\Framework\Modules\Website\Command\ListWebsiteCommand" autowire="true" public="false">
+            <tag name="console.command"/>
         </service>
 
         <service id="Papertowel\Framework\Modules\Website\WebsiteProvider" autowire="true" public="false">

@@ -1,19 +1,15 @@
 <?php
 
-namespace Papertowel\Framework\Modules\Website\Repository;
+namespace Papertowel\Framework\Repository\Website;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Papertowel\Framework\Modules\Website\Entity\Website;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityRepository;
+use Papertowel\Framework\Entity\Website\Website;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class WebsiteRepository extends ServiceEntityRepository
+class WebsiteRepository extends EntityRepository
 {
-    public function __construct(RegistryInterface $registry)
-    {
-        parent::__construct($registry, Website::class);
-    }
-
-
     /**
      * @param string $domain
      * @return Website|null

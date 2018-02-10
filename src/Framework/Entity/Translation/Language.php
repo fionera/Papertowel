@@ -1,12 +1,12 @@
 <?php
 
-namespace Papertowel\Framework\Modules\Translation\Entity;
+namespace Papertowel\Framework\Entity\Translation;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Papertowel\Framework\Repository\Language\LanguageRepository")
  */
 class Language
 {
@@ -17,7 +17,7 @@ class Language
      * @var int $id
      */
     private $id;
-    
+
     /**
      * @Column(type="string", name="language_string", unique=true, nullable=false)
      * @var string $languageString
@@ -25,10 +25,10 @@ class Language
     protected $languageString;
 
     /**
-     * @ORM\Column(type="integer", name="translation_id")
-     * @ORM\OneToOne(targetEntity="Translation")
+     * @ORM\Column(type="integer", name="translation_id", nullable=true)
+     * @ORM\OneToOne(targetEntity="Translation", mappedBy="translationId")
      * @ORM\JoinColumns(value={@ORM\JoinColumn(name="translation_id", referencedColumnName="translation_id"), @ORM\JoinColumn(name="id", referencedColumnName="language_id")})
-     * @var int
+     * @var Translation
      */
     private $name;
 
@@ -37,7 +37,7 @@ class Language
      * @param string $languageString
      * @param Translation $name
      */
-    public function __construct(string $languageString, Translation $name)
+    public function __construct(string $languageString, ?Translation $name)
     {
         $this->languageString = $languageString;
         $this->name = $name;
@@ -65,5 +65,13 @@ class Language
     public function getName() //TODO: Add Translation return type
     {
         return $this->name;
+    }
+
+    /**
+     * @param Translation $name
+     */
+    public function setName(Translation $name): void
+    {
+        $this->name = $name->getTranslationId();
     }
 }

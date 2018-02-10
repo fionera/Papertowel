@@ -5,17 +5,14 @@
 
 namespace Papertowel\Framework\Modules\Plugin;
 
-use Papertowel\Framework\Modules\Plugin\Entity\Plugin;
 use Papertowel\Framework\Modules\Plugin\Struct\PluginInterface;
-use Papertowel\Framework\Modules\Website\Entity\Website;
-use Papertowel\Framework\Struct\ListInterface;
 
 class PluginList
 {
     /**
      * @var PluginInterface[]
      */
-    private $plugins;
+    private $plugins = [];
 
     /**
      * @param PluginInterface $plugin

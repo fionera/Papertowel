@@ -5,9 +5,9 @@
 
 namespace Papertowel\Framework\Modules\Plugin\Struct\Controller;
 
+use Papertowel\Framework\Entity\Translation\Language;
+use Papertowel\Framework\Entity\Website\Website;
 use Papertowel\Framework\Modules\Theme\Struct\ThemeInterface;
-use Papertowel\Framework\Modules\Translation\Entity\Language;
-use Papertowel\Framework\Modules\Website\Entity\Website;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

@@ -6,14 +6,10 @@
 namespace Papertowel\Framework\Modules\Plugin\Struct;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
-interface PluginInterface
+interface PluginInterface extends BundleInterface
 {
-    /**
-     * @return string
-     */
-    public function getName() : string;
-
     /**
      * @return string
      */

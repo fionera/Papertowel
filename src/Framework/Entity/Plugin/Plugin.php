@@ -1,6 +1,6 @@
 <?php
 
-namespace Papertowel\Framework\Modules\Plugin\Entity;
+namespace Papertowel\Framework\Entity\Plugin;
 
 use Doctrine\ORM\Mapping as ORM;
 
