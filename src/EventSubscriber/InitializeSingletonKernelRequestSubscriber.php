@@ -2,14 +2,12 @@
 
 namespace Papertowel\EventSubscriber;
 
-use Papertowel\Component\Plugin\PluginInterface;
-use Papertowel\Entity\Website;
+use Papertowel\Framework\Entity\Website\Website;
+use Papertowel\Framework\Modules\Plugin\PluginProvider;
+use Papertowel\Framework\Modules\Plugin\Struct\PluginInterface;
+use Papertowel\Framework\Modules\Theme\ThemeProvider;
+use Papertowel\Framework\Modules\Website\WebsiteProvider;
 use Papertowel\Papertowel;
-use Papertowel\Service\Plugin\PluginProvider;
-use Papertowel\Service\Theme\ThemeProvider;
-use Papertowel\Service\Website\WebsiteProvider;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
@@ -68,8 +66,8 @@ class InitializeSingletonKernelRequestSubscriber implements EventSubscriberInter
             }
 
             {
-                $pluginList = $this->pluginProvider->getPluginNames();
                 $websitePluginStates = $requestedWebsite->getPluginStates();
+                $existingPlugins = $this->pluginProvider->getPluginNames();
 
                 foreach ($websitePluginStates as $pluginState) {
                     if (!$pluginState->isInstalled() || !$pluginState->isEnabled()) {
@@ -78,20 +76,14 @@ class InitializeSingletonKernelRequestSubscriber implements EventSubscriberInter
 
                     $plugin = $pluginState->getPlugin();
 
-                    if (!isset($pluginList[$plugin->getName()])) {
+                    if (!in_array($plugin->getName(), $existingPlugins, true)) {
                         throw new \RuntimeException('Missing Plugin: ' . $plugin->getName());
                     }
 
                     if ($pluginState->isInstalled() || $pluginState->isEnabled()) {
-                        $this->pluginProvider->loadPlugin($pluginState->getPlugin()->getName());
+                        $this->pluginProvider->loadPlugin($plugin->getName());
                     }
                 }
-
-                echo get_class($container);
-
-                array_map(function (PluginInterface $plugin) {
-                    echo $plugin->getName();
-                }, $this->pluginProvider->getPluginList());
             }
 
             {

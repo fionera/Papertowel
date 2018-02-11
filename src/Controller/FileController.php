@@ -5,7 +5,7 @@
 
 namespace Papertowel\Controller;
 
-use Papertowel\Service\Theme\ThemeProvider;
+use Papertowel\Framework\Modules\Theme\ThemeProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

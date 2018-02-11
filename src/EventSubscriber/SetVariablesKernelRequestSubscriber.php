@@ -2,15 +2,13 @@
 
 namespace Papertowel\EventSubscriber;
 
-use Papertowel\Component\Theme\ThemeInterface;
-use Papertowel\Entity\Language;
-use Papertowel\Entity\Website;
-use Papertowel\Service\Language\LanguageProvider;
-use Papertowel\Service\Theme\ThemeProvider;
-use Papertowel\Service\Theme\ThemeVariables;
-use Papertowel\Service\Website\WebsiteProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Papertowel\Framework\Modules\Theme\Struct\ThemeInterface;
+use Papertowel\Framework\Modules\Theme\ThemeProvider;
+use Papertowel\Framework\Modules\Translation\LanguageProvider;
+use Papertowel\Framework\Modules\Website\Entity\Website;
+use Papertowel\Framework\Modules\Website\WebsiteProvider;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -72,9 +70,7 @@ class SetVariablesKernelRequestSubscriber implements EventSubscriberInterface
 
     /**
      * @param GetResponseEvent $event
-     * @throws \LogicException
-     * @throws \Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException
-     * @throws \Papertowel\Component\Theme\ThemeNotFoundException
+     * @throws \Papertowel\Framework\Modules\Theme\Exception\ThemeNotFoundException
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
@@ -100,7 +96,7 @@ class SetVariablesKernelRequestSubscriber implements EventSubscriberInterface
     /**
      * @return void
      * @throws \LogicException
-     * @throws \Papertowel\Component\Theme\ThemeNotFoundException
+     * @throws \Papertowel\Framework\Modules\Theme\Exception\ThemeNotFoundException
      */
     public function assignTemplateVariables(): void
     {
@@ -118,7 +114,7 @@ class SetVariablesKernelRequestSubscriber implements EventSubscriberInterface
     /**
      * @return array
      * @throws \LogicException
-     * @throws \Papertowel\Component\Theme\ThemeNotFoundException
+     * @throws \Papertowel\Framework\Modules\Theme\Exception\ThemeNotFoundException
      */
     public function getTemplateVariables(): array
     {

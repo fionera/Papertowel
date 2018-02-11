@@ -11,4 +11,5 @@ return [
     Symfony\Bundle\MonologBundle\MonologBundle::class => ['all' => true],
     Maba\Bundle\WebpackBundle\MabaWebpackBundle::class => ['all' => true],
     Symfony\Bundle\WebServerBundle\WebServerBundle::class => ['dev' => true],
+    Papertowel\Framework\FrameworkBundle::class => ['all' => true],
 ];
