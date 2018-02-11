@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
+use Papertowel\Framework\Entity\Plugin\Plugin;
 use Papertowel\Framework\Entity\Plugin\PluginState;
 use Papertowel\Framework\Entity\Translation\Language;
 use Papertowel\Framework\Entity\Translation\Translation;
@@ -69,7 +70,7 @@ class Website
 
     /**
      * @ORM\OneToMany(targetEntity="Papertowel\Framework\Entity\Plugin\PluginState", mappedBy="website")
-     * @ORM\JoinColumn(name="id", referencedColumnName="website_id", nullable=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="website_id")
      * @var PluginState[]
      */
     private $pluginStates;
@@ -204,7 +205,16 @@ class Website
      */
     public function getPluginStates(): Collection
     {
-        return $this->pluginStates;
+        return $this->pluginStates ?? new ArrayCollection();
+    }
+
+
+    /**
+     * @param PluginState $pluginState
+     */
+    public function addPluginState(PluginState $pluginState): void
+    {
+        $this->pluginStates[] = $pluginState;
     }
 
     /**

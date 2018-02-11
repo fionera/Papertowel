@@ -2,8 +2,6 @@
 
 namespace Papertowel\Controller;
 
-use Papertowel\Component\Theme\Theme;
-use Papertowel\Component\Theme\ThemeInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

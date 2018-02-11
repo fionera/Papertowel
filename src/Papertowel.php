@@ -9,8 +9,8 @@
 namespace Papertowel;
 
 
-use Papertowel\Component\Theme\ThemeInterface;
-use Papertowel\Entity\Website;
+use Papertowel\Framework\Entity\Website\Website;
+use Papertowel\Framework\Modules\Theme\Struct\ThemeInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Twig\Environment;
@@ -28,8 +28,6 @@ class Papertowel
 
     /**
      * Papertowel constructor.
-     * @param Website $website
-     * @param ThemeInterface $theme
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)

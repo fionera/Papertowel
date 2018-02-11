@@ -6,6 +6,8 @@
 
 namespace Papertowel\Framework\Modules\Plugin;
 
+use Papertowel\Framework\Entity\Plugin\Plugin;
+use Papertowel\Framework\Entity\Plugin\PluginState;
 use Papertowel\Framework\Entity\Website\Website;
 use Papertowel\Framework\Modules\Plugin\Struct\PluginInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -32,17 +34,22 @@ class PluginManager
      * PluginManager constructor.
      * @param ContainerInterface $container
      * @param RegistryInterface $registry
+     * @param Website|null $currentWebsite
      */
-    public function __construct(ContainerInterface $container, RegistryInterface $registry, Website $currentWebsite)
+    public function __construct(ContainerInterface $container, RegistryInterface $registry, ?Website $currentWebsite)
     {
         $this->container = $container;
         $this->registry = $registry;
         $this->currentWebsite = $currentWebsite;
     }
 
-    public function enablePlugin(PluginInterface $plugin, Website $website = null): void
+    public function enablePlugin(PluginInterface $plugin, ?Website $website = null): void
     {
         if ($website === null) {
+            if ($this->currentWebsite === null) {
+                throw new \RuntimeException('Could not found Website');
+            }
+
             $website = $this->currentWebsite;
         }
 
@@ -52,7 +59,7 @@ class PluginManager
         }
 
         /** @var PluginState|null $pluginState */
-        $pluginState = $this->registry->getRepository(PluginState::class)->findOneBy(['plugin' => $plugin, 'website' => $website]);
+        $pluginState = $this->registry->getRepository(PluginState::class)->findOneBy(['plugin' => $pluginEntity, 'website' => $website]);
 
         if ($pluginState === null || !$pluginState->isInstalled() || $pluginState->isEnabled()) {
             return;
@@ -66,9 +73,13 @@ class PluginManager
         $this->registry->getManager()->flush(); //TODO: Remove maybe?
     }
 
-    public function disablePlugin(PluginInterface $plugin, Website $website = null): void
+    public function disablePlugin(PluginInterface $plugin, ?Website $website = null): void
     {
         if ($website === null) {
+            if ($this->currentWebsite === null) {
+                throw new \RuntimeException('Could not found Website');
+            }
+
             $website = $this->currentWebsite;
         }
 
@@ -78,7 +89,7 @@ class PluginManager
         }
 
         /** @var PluginState|null $pluginState */
-        $pluginState = $this->registry->getRepository(PluginState::class)->findOneBy(['plugin' => $plugin, 'website' => $website]);
+        $pluginState = $this->registry->getRepository(PluginState::class)->findOneBy(['plugin' => $pluginEntity, 'website' => $website]);
 
         if ($pluginState === null || !$pluginState->isInstalled() || !$pluginState->isEnabled()) {
             return;
@@ -92,9 +103,13 @@ class PluginManager
         $this->registry->getManager()->flush(); //TODO: Remove maybe?
     }
 
-    public function installPlugin(PluginInterface $plugin, Website $website = null): void
+    public function installPlugin(PluginInterface $plugin, ?Website $website = null): void
     {
         if ($website === null) {
+            if ($this->currentWebsite === null) {
+                throw new \RuntimeException('Could not found Website');
+            }
+
             $website = $this->currentWebsite;
         }
 
@@ -104,7 +119,7 @@ class PluginManager
         }
 
         /** @var PluginState|null $pluginState */
-        $pluginState = $this->registry->getRepository(PluginState::class)->findOneBy(['plugin' => $plugin, 'website' => $website]);
+        $pluginState = $this->registry->getRepository(PluginState::class)->findOneBy(['plugin' => $pluginEntity, 'website' => $website]);
         if ($pluginState === null) {
             $pluginState = new PluginState($website, $pluginEntity);
         }
@@ -118,13 +133,18 @@ class PluginManager
         $pluginState->setInstalled(true);
 
         $this->registry->getManager()->persist($pluginEntity);
+        $this->registry->getManager()->flush(); //TODO: Remove maybe?
         $this->registry->getManager()->persist($pluginState);
         $this->registry->getManager()->flush(); //TODO: Remove maybe?
     }
 
-    public function uninstallPlugin(PluginInterface $plugin, Website $website = null): void
+    public function uninstallPlugin(PluginInterface $plugin, ?Website $website = null): void
     {
         if ($website === null) {
+            if ($this->currentWebsite === null) {
+                throw new \RuntimeException('Could not found Website');
+            }
+
             $website = $this->currentWebsite;
         }
 
@@ -134,7 +154,7 @@ class PluginManager
         }
 
         /** @var PluginState|null $pluginState */
-        $pluginState = $this->registry->getRepository(PluginState::class)->findOneBy(['plugin' => $plugin, 'website' => $website]);
+        $pluginState = $this->registry->getRepository(PluginState::class)->findOneBy(['plugin' => $pluginEntity, 'website' => $website]);
         if ($pluginState === null) {
             return; //TODO: Exception?
         }

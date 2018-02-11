@@ -158,7 +158,7 @@ class ThemeProvider
         }
 
         require_once $classPath;
-        $className = 'templates\\' . $themeName . '\\Theme';
+        $className = $themeName . '\\Theme';
 
         $class = new $className;
 

@@ -34,14 +34,13 @@ class WebsiteProvider
     }
 
     /**
-     * @param Request $request
+     * @param string $host
      * @return null|Website
-     * @throws SuspiciousOperationException
      */
-    public function getWebsite(Request $request): ?Website
+    public function getWebsiteByHost(string $host): ?Website
     {
-        $requestDomain = $this->extractDomain($request->getHost());
-        $requestSubDomain = $this->extractSubDomains($request->getHost());
+        $requestDomain = $this->extractDomain($host);
+        $requestSubDomain = $this->extractSubDomains($host);
 
         $website = $this->doctrine->getRepository(Website::class)->findWebsiteBySubAndDomain($requestSubDomain, $requestDomain);
 
@@ -55,6 +54,16 @@ class WebsiteProvider
         }
 
         return $website;
+    }
+
+    /**
+     * @param Request $request
+     * @return null|Website
+     * @throws SuspiciousOperationException
+     */
+    public function getWebsite(Request $request): ?Website
+    {
+        return $this->getWebsiteByHost($request->getHost());
     }
 
     /**
