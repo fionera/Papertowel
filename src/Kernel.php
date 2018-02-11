@@ -57,6 +57,7 @@ class Kernel extends BaseKernel
     {
         parent::boot();
 
+        try {
         /** @var ContainerInterface $container */
         $container = $this->container;
 
@@ -113,6 +114,10 @@ class Kernel extends BaseKernel
             }
 
             $container->set('theme', $reqestedTheme);
+        }
+        } catch (\Exception $ignored) {
+            /** @noinspection ForgottenDebugOutputInspection */
+            var_dump($ignored->getTraceAsString());
         }
 
         $this->booted = false;

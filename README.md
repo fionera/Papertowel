@@ -12,12 +12,17 @@ Setup MySQL in .env
 nano .env
 ```
 
-Create the default Language
+Create the Schema (This will throw an error... _Ignore it_)
+```
+php bin/console doctrine:schema:create
+```
+
+Create the default Language (This will throw an error... _Ignore it_)
 ```
 php bin/console papertowel:language:create en_EN English
 ```
 
-Add a Website to the Database
+Add a Website to the Database (This will throw an error... _Ignore it_)
 ```
 php bin/console papertowel:website:create localhost Test Bare
 ```
