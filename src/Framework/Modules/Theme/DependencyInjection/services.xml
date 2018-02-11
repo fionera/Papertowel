@@ -14,6 +14,6 @@
             <argument type="service" id="kernel"/>
             <argument type="string">%kernel.project_dir%/themes</argument>
         </service>
-        <service id="papertowel.framework.theme.theme_provider" alias="Papertowel\Framework\Modules\Theme\ThemeProvider"/>
+        <service id="papertowel.framework.theme.theme_provider" alias="Papertowel\Framework\Modules\Theme\ThemeProvider" public="true"/>
     </services>
 </container>

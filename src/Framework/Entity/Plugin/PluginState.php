@@ -12,23 +12,14 @@ class PluginState
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    private $id;
-
-    /**
-     * @ORM\Column(name="website_id", nullable=false)
      * @ORM\ManyToOne(targetEntity="Papertowel\Framework\Entity\Website\Website", inversedBy="pluginStates")
      * @var Website
      */
     private $website;
 
     /**
-     * @ORM\Column(name="plugin_id", nullable=false)
-     * @ORM\ManyToOne(targetEntity="Papertowel\Entity\Plugin")
-     * @ORM\JoinColumn(name="plugin_id", referencedColumnName="id")
+     * @ORM\Id
+     * @ORM\ManyToOne(targetEntity="Papertowel\Framework\Entity\Plugin\Plugin")
      * @var Plugin
      */
     private $plugin;

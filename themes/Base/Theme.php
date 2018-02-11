@@ -1,8 +1,8 @@
 <?php
 
-namespace templates\Base;
+namespace Base;
 
-class Theme extends \Papertowel\Component\Theme\Theme
+class Theme extends \Papertowel\Framework\Modules\Theme\Struct\Theme
 {
 
     /**

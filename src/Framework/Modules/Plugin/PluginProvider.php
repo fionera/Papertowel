@@ -27,9 +27,6 @@ class PluginProvider
      */
     private $plugins = null;
 
-    /** @var bool Already tried to load Plugins? */
-    private $loaded = false;
-
     /**
      * LanguageProvider constructor.
      * @param LoggerInterface $logger
@@ -65,7 +62,7 @@ class PluginProvider
      */
     public function getPlugin(string $pluginName): ?PluginInterface
     {
-        return $this->loaded === true ? $this->plugins[$pluginName] : null;
+        return $this->plugins[$pluginName] ?? null;
     }
 
     /**
@@ -107,7 +104,7 @@ class PluginProvider
         }
 
         require_once $classPath;
-        $className = 'plugins\\' . $pluginName . '\\' . $pluginName;
+        $className = $pluginName . '\\' . $pluginName;
 
         $class = new $className;
 

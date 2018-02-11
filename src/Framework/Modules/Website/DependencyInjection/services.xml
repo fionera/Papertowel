@@ -21,6 +21,6 @@
             <argument type="service" id="doctrine"/>
             <argument type="service" id="logger"/>
         </service>
-        <service id="papertowel.framework.website.website_provider" alias="Papertowel\Framework\Modules\Website\WebsiteProvider"/>
+        <service id="papertowel.framework.website.website_provider" alias="Papertowel\Framework\Modules\Website\WebsiteProvider" public="true"/>
     </services>
 </container>
