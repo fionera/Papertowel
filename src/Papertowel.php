@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: Fionera
- * Date: 17.01.2018
- * Time: 20:24
- */
 
 namespace Papertowel;
-
 
 use Papertowel\Framework\Entity\Website\Website;
 use Papertowel\Framework\Modules\Theme\Struct\ThemeInterface;

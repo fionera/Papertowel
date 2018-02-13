@@ -48,6 +48,5 @@ class ListLanguageCommand extends Command
         foreach ($languages as $language) {
             var_dump($language);
         }
-
     }
 }

@@ -6,7 +6,6 @@
 
 namespace Papertowel\Framework\Struct;
 
-
 class ArrayList implements ListInterface
 {
     protected $data = [];

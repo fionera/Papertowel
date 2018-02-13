@@ -150,8 +150,9 @@ class SetVariablesKernelRequestSubscriber implements EventSubscriberInterface
 
         if ($loader instanceof FilesystemLoader) {
             foreach ($themePaths as $themeName => $path) {
-                if ($themeName)
+                if ($themeName) {
                     $loader->setPaths($path, $themeName);
+                }
             }
 
             $loader->setPaths($themePaths[$this->theme->getName()]);

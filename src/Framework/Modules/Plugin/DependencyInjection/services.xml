@@ -5,10 +5,7 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="Papertowel\Framework\Modules\Plugin\PluginProvider">
-            <argument type="service" id="logger"/>
-            <argument type="string">%kernel.project_dir%/plugins</argument>
-        </service>
+        <service id="Papertowel\Framework\Modules\Plugin\PluginProvider" synthetic="true"/>
         <service id="papertowel.framework.plugin.plugin_provider" alias="Papertowel\Framework\Modules\Plugin\PluginProvider" public="true"/>
 
         <service id="Papertowel\Framework\Modules\Plugin\PluginManager">

@@ -7,16 +7,9 @@
 namespace Papertowel\Framework\Modules\Plugin;
 
 use Papertowel\Framework\Modules\Plugin\Struct\PluginInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 class PluginProvider
 {
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
     /**
      * @var string
      */
@@ -25,16 +18,14 @@ class PluginProvider
     /**
      * @var PluginInterface[]|null
      */
-    private $plugins = null;
+    private $plugins;
 
     /**
      * LanguageProvider constructor.
-     * @param LoggerInterface $logger
      * @param string $pluginBasePath
      */
-    public function __construct(LoggerInterface $logger, string $pluginBasePath)
+    public function __construct(string $pluginBasePath)
     {
-        $this->logger = $logger;
         $this->pluginBasePath = $pluginBasePath;
     }
 
@@ -100,7 +91,7 @@ class PluginProvider
         $classPath = $this->pluginBasePath . '/' . $pluginName . '/' . $pluginName . '.php';
 
         if (!file_exists($classPath)) {
-            $this->logger->error('Could not find ' . $pluginName . '.php for Plugin');
+            throw new \LogicException('Could not find ' . $pluginName . '.php for Plugin');
         }
 
         require_once $classPath;
@@ -109,8 +100,7 @@ class PluginProvider
         $class = new $className;
 
         if (!($class instanceof PluginInterface)) {
-            $this->logger->error('Plugin must Implement PluginInterface: "' . $pluginName . '"');
-            throw new \LogicException('');
+            throw new \LogicException('Plugin must Implement PluginInterface: "' . $pluginName . '"');
         }
 
         return $class;

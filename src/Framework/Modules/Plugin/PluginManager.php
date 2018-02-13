@@ -65,7 +65,6 @@ class PluginManager
             return;
         }
 
-        $plugin->setContainer($this->container);
         $plugin->onEnable();
 
         $pluginState->setEnabled(true);
@@ -164,7 +163,7 @@ class PluginManager
             return;
         }
 
-        $plugin->onUninstall($this->container);
+        $plugin->onUninstall();
 
         $pluginState->setInstalled(false);
 

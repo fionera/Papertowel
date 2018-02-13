@@ -37,7 +37,7 @@ interface PluginInterface extends BundleInterface
 
     public function onInstall(): void;
 
-     public function onEnable(): void;
+    public function onEnable(): void;
 
     public function onDisable(): void;
 

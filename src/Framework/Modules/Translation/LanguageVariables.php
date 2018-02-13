@@ -43,7 +43,4 @@ class LanguageVariables
         $this->languageProvider = $languageProvider;
         $this->container = $container;
     }
-
-
-
 }

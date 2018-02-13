@@ -5,12 +5,18 @@ namespace Papertowel\EventSubscriber;
 use Papertowel\Framework\Entity\Website\Website;
 use Papertowel\Framework\Modules\Plugin\PluginProvider;
 use Papertowel\Framework\Modules\Plugin\Struct\PluginInterface;
+use Papertowel\Framework\Modules\Theme\Exception\ThemeNotFoundException;
 use Papertowel\Framework\Modules\Theme\ThemeProvider;
 use Papertowel\Framework\Modules\Website\WebsiteProvider;
 use Papertowel\Papertowel;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
+/**
+ * Class InitializeSingletonKernelRequestSubscriber
+ * @package Papertowel\EventSubscriber
+ */
 class InitializeSingletonKernelRequestSubscriber implements EventSubscriberInterface
 {
     /**
@@ -23,25 +29,34 @@ class InitializeSingletonKernelRequestSubscriber implements EventSubscriberInter
     private $themeProvider;
 
     /**
-     * @var boolean
+     * @var ContainerInterface
      */
-    private $booted;
-    /**
-     * @var PluginProvider
-     */
-    private $pluginProvider;
+    private $container;
 
     /**
      * InitializeSingletonKernelRequestSubscriber constructor.
      * @param WebsiteProvider $websiteProvider
      * @param ThemeProvider $themeProvider
-     * @param PluginProvider $pluginProvider
+     * @param ContainerInterface $container
      */
-    public function __construct(WebsiteProvider $websiteProvider, ThemeProvider $themeProvider, PluginProvider $pluginProvider)
-    {
+    public function __construct(
+        WebsiteProvider $websiteProvider,
+        ThemeProvider $themeProvider,
+        ContainerInterface $container
+    ) {
         $this->websiteProvider = $websiteProvider;
         $this->themeProvider = $themeProvider;
-        $this->pluginProvider = $pluginProvider;
+        $this->container = $container;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            'kernel.request' => ['onKernelRequest', 9001],
+        ];
     }
 
     /**
@@ -50,63 +65,24 @@ class InitializeSingletonKernelRequestSubscriber implements EventSubscriberInter
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if ($this->booted !== true) {
-            global $kernel;
-            $container = $kernel->getContainer();
+        if ($event->isMasterRequest()) {
+            /** @var Website|null $requestedWebsite */
+            $requestedWebsite = $this->websiteProvider->getWebsite($event->getRequest());
 
-            {
-                /** @var Website|null $requestedWebsite */
-                $requestedWebsite = $this->websiteProvider->getWebsite($event->getRequest());
-
-                if ($requestedWebsite === null) {
-                    throw new \Exception('Website cannot be found');
-                }
-
-                $container->set('website', $requestedWebsite);
+            if ($requestedWebsite === null) {
+                throw new \RuntimeException('Website cannot be found');
             }
 
-            {
-                $websitePluginStates = $requestedWebsite->getPluginStates();
-                $existingPlugins = $this->pluginProvider->getPluginNames();
+            $this->container->set('website', $requestedWebsite);
+            $requestedTheme = $this->themeProvider->getThemeByName($requestedWebsite->getThemeName());
 
-                foreach ($websitePluginStates as $pluginState) {
-                    if (!$pluginState->isInstalled() || !$pluginState->isEnabled()) {
-                        continue;
-                    }
-
-                    $plugin = $pluginState->getPlugin();
-
-                    if (!in_array($plugin->getName(), $existingPlugins, true)) {
-                        throw new \RuntimeException('Missing Plugin: ' . $plugin->getName());
-                    }
-
-                    if ($pluginState->isInstalled() || $pluginState->isEnabled()) {
-                        $this->pluginProvider->loadPlugin($plugin->getName());
-                    }
-                }
+            if ($requestedTheme === null) {
+                throw new ThemeNotFoundException('Theme cannot be found');
             }
 
-            {
-                $reqestedTheme = $this->themeProvider->getThemeByName($requestedWebsite->getThemeName());
+            $this->container->set('theme', $requestedTheme);
 
-                if ($reqestedTheme === null) {
-                    throw new \Exception('Theme cannot be found');
-                }
-
-                $container->set('theme', $reqestedTheme);
-            }
-
-            Papertowel::setInstance(new Papertowel($container));
-
-            $this->booted = true;
+            Papertowel::setInstance(new Papertowel($this->container));
         }
     }
-
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            'kernel.request' => ['onKernelRequest', 9001],
-        ];
-    }
-
 }

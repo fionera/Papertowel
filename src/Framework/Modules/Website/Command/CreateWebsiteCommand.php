@@ -53,7 +53,7 @@ class CreateWebsiteCommand extends Command
 
         $doctrine = $this->container->get('doctrine');
 
-        if ($domain === null || $websiteName === null || $themeName=== null ) {
+        if ($domain === null || $websiteName === null || $themeName=== null) {
             throw new InvalidArgumentException();
         }
 

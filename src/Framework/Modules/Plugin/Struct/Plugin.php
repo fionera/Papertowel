@@ -5,10 +5,7 @@
 
 namespace Papertowel\Framework\Modules\Plugin\Struct;
 
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 abstract class Plugin extends Bundle implements PluginInterface
@@ -73,10 +70,17 @@ abstract class Plugin extends Bundle implements PluginInterface
         return $this->description;
     }
 
-    /**
-     * @param ContainerInterface $container
-     */
-    public function onInstall(ContainerInterface $container): void
+    public function onInstall(): void
+    {
+        // Nothing to do
+    }
+
+    public function onEnable(): void
+    {
+        // Nothing to do
+    }
+
+    public function onDisable(): void
     {
         // Nothing to do
     }
@@ -84,23 +88,7 @@ abstract class Plugin extends Bundle implements PluginInterface
     /**
      * @param ContainerInterface $container
      */
-    public function onEnable(ContainerInterface $container): void
-    {
-        // Nothing to do
-    }
-
-    /**
-     * @param ContainerInterface $container
-     */
-    public function onDisable(ContainerInterface $container): void
-    {
-        // Nothing to do
-    }
-
-    /**
-     * @param ContainerInterface $container
-     */
-    public function onUninstall(ContainerInterface $container): void
+    public function onUninstall(): void
     {
         // Nothing to do
     }

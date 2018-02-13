@@ -83,7 +83,6 @@ class ThemeProvider
      */
     public function getTemplatePath($theme): string
     {
-
         $themeName = $theme;
         if ($theme instanceof ThemeInterface) {
             $themeName = $theme->getName();

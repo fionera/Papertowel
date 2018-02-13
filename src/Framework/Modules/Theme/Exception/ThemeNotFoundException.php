@@ -5,6 +5,6 @@
 
 namespace Papertowel\Framework\Modules\Theme\Exception;
 
-class ThemeNotFoundException extends \Exception {
-
+class ThemeNotFoundException extends \Exception
+{
 }

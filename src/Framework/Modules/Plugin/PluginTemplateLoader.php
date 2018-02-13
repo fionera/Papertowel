@@ -6,8 +6,6 @@
 
 namespace Papertowel\Framework\Modules\Plugin;
 
-
 class PluginTemplateLoader
 {
-
 }

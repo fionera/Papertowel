@@ -2,7 +2,6 @@
 
 namespace Papertowel\Framework\Modules\Theme\Struct;
 
-
 interface ThemeInterface
 {
     public function getName(): string;

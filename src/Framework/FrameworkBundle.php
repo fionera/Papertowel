@@ -27,5 +27,4 @@ class FrameworkBundle extends Bundle
     {
         return new FrameworkExtension();
     }
-
 }

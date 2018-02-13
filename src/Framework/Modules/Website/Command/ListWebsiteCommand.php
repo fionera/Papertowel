@@ -48,6 +48,5 @@ class ListWebsiteCommand extends Command
         foreach ($websites as $website) {
             var_dump($website->getPluginStates()->isEmpty());
         }
-
     }
 }
