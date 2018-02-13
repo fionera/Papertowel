@@ -7,12 +7,9 @@ namespace Papertowel\Framework\Modules\Translation;
 
 use Papertowel\Framework\Entity\Translation\Language;
 use Papertowel\Framework\Entity\Translation\Translation;
-use Papertowel\Service\Session\SessionProvider as SessionProvider;
 use Psr\Log\LoggerInterface;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Twig\Environment;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class LanguageProvider
 {
@@ -26,21 +23,21 @@ class LanguageProvider
      */
     private $registry;
     /**
-     * @var SessionProvider
+     * @var SessionInterface
      */
-    private $sessionProvider;
+    private $session;
 
     /**
      * LanguageProvider constructor.
      * @param RegistryInterface $registry
      * @param LoggerInterface $logger
-     * @param SessionProvider $sessionProvider
+     * @param SessionInterface $session
      */
-    public function __construct(RegistryInterface $registry, LoggerInterface $logger, SessionProvider $sessionProvider)
+    public function __construct(RegistryInterface $registry, LoggerInterface $logger, SessionInterface $session)
     {
         $this->logger = $logger;
         $this->registry = $registry;
-        $this->sessionProvider = $sessionProvider;
+        $this->session = $session;
     }
 
     /**
@@ -56,8 +53,8 @@ class LanguageProvider
      */
     public function getCurrentLanguage(): Language
     {
-        if ($this->sessionProvider->getSession()->has('selectedLanguage')) {
-            $selectedLanguageId = $this->sessionProvider->getSession()->get('selectedLanguage');
+        if ($this->session->has('selectedLanguage')) {
+            $selectedLanguageId = $this->session->get('selectedLanguage');
 
             $language = $this->registry->getRepository(Language::class)->findOneBy(['id' => $selectedLanguageId]);
             if ($language !== null) {

@@ -65,7 +65,8 @@ class PluginManager
             return;
         }
 
-        $plugin->onEnable($this->container);
+        $plugin->setContainer($this->container);
+        $plugin->onEnable();
 
         $pluginState->setEnabled(true);
 

@@ -8,7 +8,7 @@
         <service id="Papertowel\Framework\Modules\Translation\LanguageProvider" autowire="false" public="false">
             <argument type="service" id="doctrine"/>
             <argument type="service" id="logger"/>
-            <argument type="service" id="Papertowel\Service\Session\SessionProvider"/>
+            <argument type="service" id="session"/>
         </service>
         <service id="papertowel.framework.translation.language_provider" alias="Papertowel\Framework\Modules\Translation\LanguageProvider"/>
 

@@ -67,10 +67,10 @@ class WebsiteProvider
     }
 
     /**
-     * @param $domain string
+     * @param string $domain
      * @return string
      */
-    private function extractDomain($domain): string
+    private function extractDomain(string $domain): string
     {
         if (preg_match("/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i", $domain, $matches)) {
             return $matches['domain'];
@@ -83,7 +83,7 @@ class WebsiteProvider
      * @param $fullDomain string
      * @return string|null
      */
-    private function extractSubDomains($fullDomain)
+    private function extractSubDomains(string $fullDomain)
     {
         $domain = $this->extractDomain($fullDomain);
 

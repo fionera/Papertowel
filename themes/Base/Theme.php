@@ -14,7 +14,7 @@ class Theme extends \Papertowel\Framework\Modules\Theme\Struct\Theme
 
         $this->author = 'Fionera';
         $this->name = 'Base';
-        $this->css = ['/public/css/base.css'];
-        $this->javascript = ['/public/js/base.js'];
+        $this->css = ['/public/css/base.css', ''];
+        $this->javascript = ['/public/js/base.js', ''];
     }
 }

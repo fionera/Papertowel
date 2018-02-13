@@ -2,12 +2,10 @@
 
 namespace Papertowel\EventSubscriber;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Papertowel\Framework\Entity\Website\Website;
 use Papertowel\Framework\Modules\Theme\Struct\ThemeInterface;
 use Papertowel\Framework\Modules\Theme\ThemeProvider;
 use Papertowel\Framework\Modules\Translation\LanguageProvider;
-use Papertowel\Framework\Modules\Website\Entity\Website;
 use Papertowel\Framework\Modules\Website\WebsiteProvider;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -132,8 +130,11 @@ class SetVariablesKernelRequestSubscriber implements EventSubscriberInterface
             $themeVariables['stylesheets'][] = $theme->getCss();
         }
 
-        $themeVariables['javascripts'] = array_merge(...$themeVariables['javascripts']);
-        $themeVariables['stylesheets'] = array_merge(...$themeVariables['stylesheets']);
+        if (count($themeVariables['javascripts']) > 1) {
+            $themeVariables['javascripts'] = array_merge(...$themeVariables['javascripts']);
+            $themeVariables['stylesheets'] = array_merge(...$themeVariables['stylesheets']);
+        }
+
 
         return $themeVariables;
     }

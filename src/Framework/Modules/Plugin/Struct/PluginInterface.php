@@ -13,17 +13,17 @@ interface PluginInterface extends BundleInterface
     /**
      * @return string
      */
-    public function getAuthor() : string;
+    public function getAuthor(): string;
 
     /**
      * @return float
      */
-    public function getVersion() : float;
+    public function getVersion(): float;
 
     /**
      * @return string
      */
-    public function getDescription() : string;
+    public function getDescription(): string;
 
     /**
      * @return bool
@@ -35,23 +35,11 @@ interface PluginInterface extends BundleInterface
      */
     public function setEnabled(bool $enabled): void;
 
-    /**
-     * @param ContainerInterface $container
-     */
-    public function onInstall(ContainerInterface $container) : void;
+    public function onInstall(): void;
 
-    /**
-     * @param ContainerInterface $container
-     */
-    public function onEnable(ContainerInterface $container) : void;
+     public function onEnable(): void;
 
-    /**
-     * @param ContainerInterface $container
-     */
-    public function onDisable(ContainerInterface $container) : void;
+    public function onDisable(): void;
 
-    /**
-     * @param ContainerInterface $container
-     */
-    public function onUninstall(ContainerInterface $container) : void;
+    public function onUninstall(): void;
 }
