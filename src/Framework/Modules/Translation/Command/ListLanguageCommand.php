@@ -42,11 +42,11 @@ class ListLanguageCommand extends Command
     {
         $doctrine = $this->container->get('doctrine');
 
-        /** @var Website[] $languages */
+        /** @var Language[] $languages */
         $languages = $doctrine->getRepository(Language::class)->findAll();
 
         foreach ($languages as $language) {
-            var_dump($language);
+            $output->writeln($language->getName()->getTranslationString() . ' (' . $language->getId() . '): ' . $language->getLanguageString());
         }
     }
 }
