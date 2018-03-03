@@ -25,7 +25,6 @@ class Language
     protected $languageString;
 
     /**
-     * @ORM\Column(type="integer", name="translation_id", nullable=true)
      * @ORM\OneToOne(targetEntity="Translation", mappedBy="translationId")
      * @ORM\JoinColumns(value={@ORM\JoinColumn(name="translation_id", referencedColumnName="translation_id"), @ORM\JoinColumn(name="id", referencedColumnName="language_id")})
      * @var Translation

@@ -62,6 +62,14 @@ class Translation
     }
 
     /**
+     * @return string
+     */
+    public function getTranslationString(): string
+    {
+        return $this->translationString;
+    }
+
+    /**
      * @param Language $language
      */
     public function setLanguage(Language $language): void
