@@ -4,9 +4,10 @@ namespace Papertowel;
 
 use Papertowel\Framework\Modules\Plugin\PluginList;
 use Papertowel\Framework\Modules\Plugin\PluginProvider;
-use Psr\Log\NullLogger;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -98,15 +99,34 @@ class Kernel extends BaseKernel
      *
      * @throws \RuntimeException
      */
-    private function getPlugins() : array
+    private function getPlugins(): array
     {
         $connection = DatabaseConnector::createPdoConnection();
 
         $enabledPluginsPrepared = $connection->prepare('SELECT plugin.name FROM plugin_state
 INNER JOIN plugin ON(plugin.id = plugin_state.plugin_id)
-WHERE website_id = (SELECT id FROM website WHERE `domain` = ?) AND plugin_state.enabled = 1 AND plugin_state.installed = 1');
-        $enabledPluginsPrepared->execute([$this->request->getHost()]);
-        $enabledPlugins = $enabledPluginsPrepared->fetchAll(\PDO::FETCH_COLUMN);
+WHERE website_id IN (SELECT website.id FROM website WHERE `domain` = ?) 
+AND plugin_state.enabled = 1 AND plugin_state.installed = 1');
+
+        if ($this->request !== null) {
+            $domain = $this->request->getHost();
+        } else {
+            //Must be a Command
+            $input = new ArgvInput();
+            $output = new ConsoleOutput();
+            if (!$input->hasParameterOption(['--domain', '-d'], true)) {
+                $output->writeln('<error>You did not provide a Domain. Please note that no Plugins are loaded</error>');
+            }
+
+            $domain = $input->getParameterOption(['--domain', '-d'], null);
+        }
+
+        if ($domain !== null) {
+            $enabledPluginsPrepared->execute([$domain]);
+            $enabledPlugins = $enabledPluginsPrepared->fetchAll(\PDO::FETCH_COLUMN);
+        } else {
+            $enabledPlugins = [];
+        }
 
         $this->pluginProvider = new PluginProvider($this->getProjectDir() . '/plugins');
         $this->pluginProvider->loadPlugins($enabledPlugins);

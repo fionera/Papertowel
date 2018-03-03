@@ -1,8 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+use Papertowel\Application;
 use Papertowel\Kernel;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\Dotenv\Dotenv;
