@@ -6,10 +6,9 @@
 namespace Papertowel\Framework\Modules\Plugin\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Papertowel\Framework\Entity\Website\Website;
 use Papertowel\Framework\Modules\Plugin\PluginManager;
 use Papertowel\Framework\Modules\Plugin\PluginProvider;
-use Papertowel\Framework\Modules\Website\WebsiteProvider;
+use Papertowel\Framework\Modules\Website\Struct\WebsiteInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -23,10 +22,6 @@ class PluginEnableCommand extends Command
      */
     private $entityManager;
     /**
-     * @var WebsiteProvider
-     */
-    private $websiteProvider;
-    /**
      * @var PluginProvider
      */
     private $pluginProvider;
@@ -34,21 +29,25 @@ class PluginEnableCommand extends Command
      * @var PluginManager
      */
     private $pluginManager;
+    /**
+     * @var WebsiteInterface
+     */
+    private $website;
 
-    public function __construct(EntityManagerInterface $entityManager, WebsiteProvider $websiteProvider, PluginProvider $pluginProvider, PluginManager $pluginManager)
+    public function __construct(EntityManagerInterface $entityManager, WebsiteInterface $website, PluginProvider $pluginProvider, PluginManager $pluginManager)
     {
         parent::__construct();
 
         $this->entityManager = $entityManager;
-        $this->websiteProvider = $websiteProvider;
         $this->pluginProvider = $pluginProvider;
         $this->pluginManager = $pluginManager;
+        $this->website = $website;
     }
 
 
     protected function configure()
     {
-        $this->addArgument('websiteHost')->addArgument('pluginName');
+        $this->addArgument('pluginName');
     }
 
     /**
@@ -60,15 +59,7 @@ class PluginEnableCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $websiteHost = $input->getArgument('websiteHost');
         $pluginName = $input->getArgument('pluginName');
-
-        /** @var Website|null $website */
-        $website = $this->websiteProvider->getWebsiteByHost($websiteHost);
-
-        if ($website === null) {
-            throw new \Exception('Website not found');
-        }
 
         $existingPlugins = $this->pluginProvider->getPluginNames();
 
@@ -86,6 +77,6 @@ class PluginEnableCommand extends Command
             throw new \Exception('Plugin not found');
         }
 
-        $this->pluginManager->enablePlugin($plugin, $website);
+        $this->pluginManager->enablePlugin($plugin, $this->website);
     }
 }

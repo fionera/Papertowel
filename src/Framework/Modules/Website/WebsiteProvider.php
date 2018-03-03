@@ -2,11 +2,13 @@
 
 namespace Papertowel\Framework\Modules\Website;
 
+use Papertowel\Framework\Entity\Translation\Translation;
 use Papertowel\Framework\Entity\Website\Website;
+use Papertowel\Framework\Modules\Website\Struct\NullWebsite;
+use Papertowel\Framework\Modules\Website\Struct\WebsiteInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,7 +47,7 @@ class WebsiteProvider
      * @param string $host
      * @return null|Website
      */
-    public function getWebsiteByHost(string $host): ?Website
+    public function getWebsiteByHost(string $host): ?WebsiteInterface
     {
         $requestDomain = $this->extractDomain($host);
         $requestSubDomain = $this->extractSubDomains($host);
@@ -69,19 +71,19 @@ class WebsiteProvider
      * @return null|Website
      * @throws SuspiciousOperationException
      */
-    public function getWebsiteByRequest(Request $request): ?Website
+    public function getWebsiteByRequest(Request $request): ?WebsiteInterface
     {
         return $this->getWebsiteByHost($request->getHost());
     }
 
-    public function getCurrentWebsite(): ?Website
+    public function getCurrentWebsite(): ?WebsiteInterface
     {
         $domain = null;
         if ($this->container->has('request_stack')) {
             $request = $this->container->get('request_stack')->getMasterRequest();
 
             if ($request !== null) {
-             $domain = $request->getHost();
+                $domain = $request->getHost();
             }
         }
 
@@ -92,7 +94,11 @@ class WebsiteProvider
         }
 
         if ($domain === null) {
-            return null;
+
+            $defaultLanguage = $this->container->get('papertowel.framework.translation.language_provider')->getDefaultLanguage();
+            $translation = new Translation(0, $defaultLanguage, '');
+            $nullWebsite = new NullWebsite($defaultLanguage, $translation);
+            return $nullWebsite;
         }
 
         return $this->getWebsiteByHost($domain);

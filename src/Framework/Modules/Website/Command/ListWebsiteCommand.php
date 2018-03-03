@@ -46,7 +46,7 @@ class ListWebsiteCommand extends Command
         $websites = $doctrine->getRepository(Website::class)->findAll();
 
         foreach ($websites as $website) {
-            var_dump($website->getPluginStates()->isEmpty());
+            $output->writeln('');
         }
     }
 }

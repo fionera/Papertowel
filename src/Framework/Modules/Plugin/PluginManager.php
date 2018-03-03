@@ -10,6 +10,7 @@ use Papertowel\Framework\Entity\Plugin\Plugin;
 use Papertowel\Framework\Entity\Plugin\PluginState;
 use Papertowel\Framework\Entity\Website\Website;
 use Papertowel\Framework\Modules\Plugin\Struct\PluginInterface;
+use Papertowel\Framework\Modules\Website\Struct\WebsiteInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -26,7 +27,7 @@ class PluginManager
     private $registry;
 
     /**
-     * @var Website
+     * @var WebsiteInterface
      */
     private $currentWebsite;
 
@@ -34,16 +35,16 @@ class PluginManager
      * PluginManager constructor.
      * @param ContainerInterface $container
      * @param RegistryInterface $registry
-     * @param Website|null $currentWebsite
+     * @param WebsiteInterface|null $currentWebsite
      */
-    public function __construct(ContainerInterface $container, RegistryInterface $registry, ?Website $currentWebsite)
+    public function __construct(ContainerInterface $container, RegistryInterface $registry, ?WebsiteInterface $currentWebsite)
     {
         $this->container = $container;
         $this->registry = $registry;
         $this->currentWebsite = $currentWebsite;
     }
 
-    public function enablePlugin(PluginInterface $plugin, ?Website $website = null): void
+    public function enablePlugin(PluginInterface $plugin, ?WebsiteInterface $website = null): void
     {
         if ($website === null) {
             if ($this->currentWebsite === null) {
@@ -73,7 +74,7 @@ class PluginManager
         $this->registry->getManager()->flush(); //TODO: Remove maybe?
     }
 
-    public function disablePlugin(PluginInterface $plugin, ?Website $website = null): void
+    public function disablePlugin(PluginInterface $plugin, ?WebsiteInterface $website = null): void
     {
         if ($website === null) {
             if ($this->currentWebsite === null) {
@@ -103,7 +104,7 @@ class PluginManager
         $this->registry->getManager()->flush(); //TODO: Remove maybe?
     }
 
-    public function installPlugin(PluginInterface $plugin, ?Website $website = null): void
+    public function installPlugin(PluginInterface $plugin, ?WebsiteInterface $website = null): void
     {
         if ($website === null) {
             if ($this->currentWebsite === null) {
@@ -138,7 +139,7 @@ class PluginManager
         $this->registry->getManager()->flush(); //TODO: Remove maybe?
     }
 
-    public function uninstallPlugin(PluginInterface $plugin, ?Website $website = null): void
+    public function uninstallPlugin(PluginInterface $plugin, ?WebsiteInterface $website = null): void
     {
         if ($website === null) {
             if ($this->currentWebsite === null) {
