@@ -15,7 +15,10 @@ class DatabaseConnector
     {
         $dbHost = array_merge(['port' => 3306], parse_url(getenv('DATABASE_URL')));
 
-        $password = $dbHost['pass'];
+        $password = null;
+        if (isset($dbHost['pass'])) {
+            $password = $dbHost['pass'];
+        }
         $connectionString = self::buildConnectionString($dbHost);
         try {
             $conn = new \PDO('mysql:' . $connectionString, $dbHost['user'], $password);
