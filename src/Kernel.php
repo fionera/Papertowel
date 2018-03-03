@@ -149,6 +149,8 @@ AND plugin_state.enabled = 1 AND plugin_state.installed = 1');
         foreach ($this->plugins->getActivePlugins() as $plugin) {
             $plugin->setContainer($this->container);
         }
+
+        Papertowel::setInstance(new Papertowel($this->container));
     }
 
 

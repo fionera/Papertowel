@@ -73,7 +73,7 @@ class SetVariablesKernelRequestSubscriber implements EventSubscriberInterface
     public function onKernelRequest(GetResponseEvent $event)
     {
         if ($this->done !== true) {
-            $this->website = $this->websiteProvider->getWebsite($event->getRequest());
+            $this->website = $this->websiteProvider->getWebsiteByRequest($event->getRequest());
             $this->theme = $this->themeProvider->getThemeByName($this->website->getThemeName());
 
             $this->setTemplatePath();

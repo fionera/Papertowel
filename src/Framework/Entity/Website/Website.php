@@ -10,12 +10,13 @@ use Papertowel\Framework\Entity\Plugin\Plugin;
 use Papertowel\Framework\Entity\Plugin\PluginState;
 use Papertowel\Framework\Entity\Translation\Language;
 use Papertowel\Framework\Entity\Translation\Translation;
+use Papertowel\Framework\Modules\Website\Struct\WebsiteInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Papertowel\Framework\Repository\Website\WebsiteRepository")
  * @ORM\Table(name="website", uniqueConstraints={@UniqueConstraint(name="parent_domain", columns={"parent_id", "domain"})})
  */
-class Website
+class Website implements WebsiteInterface
 {
     /**
      * @ORM\Id

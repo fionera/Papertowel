@@ -4,6 +4,7 @@ namespace Papertowel\Framework\Modules\Theme;
 
 use Papertowel\Framework\Modules\Theme\Exception\ThemeNotFoundException;
 use Papertowel\Framework\Modules\Theme\Struct\ThemeInterface;
+use Papertowel\Framework\Modules\Website\Struct\WebsiteInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -29,6 +30,8 @@ class ThemeProvider
      * @var ThemeInterface[]
      */
     private $themes = [];
+
+    private $booted;
 
     /**
      * LanguageProvider constructor.
@@ -102,7 +105,7 @@ class ThemeProvider
      */
     public function getThemeByName(string $themeName): ThemeInterface
     {
-        if (\count($this->themes) === 0) {
+        if (!$this->booted) {
             $this->loadAllThemes();
         }
 
@@ -111,6 +114,16 @@ class ThemeProvider
         }
 
         return $this->themes[$themeName];
+    }
+
+    /**
+     * @param WebsiteInterface $website
+     * @return ThemeInterface
+     * @throws ThemeNotFoundException
+     */
+    public function getCurrentTheme(WebsiteInterface $website): ThemeInterface
+    {
+        return $this->getThemeByName($website->getThemeName());
     }
 
     /**
@@ -126,6 +139,8 @@ class ThemeProvider
         foreach ($this->getAllThemeFoldersWithName() as $themeName => $themeFolder) {
             $this->themes[$themeName] = $this->loadTheme($themeName);
         }
+
+        $this->booted = true;
     }
 
     public function getAllThemeFoldersWithName(): array

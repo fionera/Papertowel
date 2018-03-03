@@ -5,9 +5,10 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <!--suppress XmlServiceArgumentInspection -->
-        <service id="website" synthetic="true" public="true" class="Papertowel\Framework\Entity\Website\Website" autowire="false">
+        <service id="website" public="true" class="Papertowel\Framework\Modules\Website\Struct\WebsiteInterface" autowire="false">
+            <factory service="papertowel.framework.website.website_provider" method="getCurrentWebsite"/>
         </service>
+        <service id="Papertowel\Framework\Modules\Website\Struct\WebsiteInterface" public="true" alias="website"/>
 
         <service id="Papertowel\Framework\Modules\Website\Command\CreateWebsiteCommand" autowire="true" public="false">
             <tag name="console.command"/>
@@ -18,6 +19,7 @@
         </service>
 
         <service id="Papertowel\Framework\Modules\Website\WebsiteProvider" autowire="true" public="false">
+            <argument type="service" id="service_container"/>
             <argument type="service" id="doctrine"/>
             <argument type="service" id="logger"/>
         </service>

@@ -5,10 +5,11 @@ namespace Papertowel\Framework\Modules\Website;
 use Papertowel\Framework\Entity\Website\Website;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 class WebsiteProvider
 {
@@ -23,14 +24,21 @@ class WebsiteProvider
     private $logger;
 
     /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    /**
      * LanguageProvider constructor.
+     * @param ContainerInterface $container
      * @param RegistryInterface $registry
      * @param LoggerInterface $logger
      */
-    public function __construct(RegistryInterface $registry, LoggerInterface $logger)
+    public function __construct(ContainerInterface $container, RegistryInterface $registry, LoggerInterface $logger)
     {
         $this->doctrine = $registry;
         $this->logger = $logger;
+        $this->container = $container;
     }
 
     /**
@@ -61,9 +69,33 @@ class WebsiteProvider
      * @return null|Website
      * @throws SuspiciousOperationException
      */
-    public function getWebsite(Request $request): ?Website
+    public function getWebsiteByRequest(Request $request): ?Website
     {
         return $this->getWebsiteByHost($request->getHost());
+    }
+
+    public function getCurrentWebsite(): ?Website
+    {
+        $domain = null;
+        if ($this->container->has('request_stack')) {
+            $request = $this->container->get('request_stack')->getMasterRequest();
+
+            if ($request !== null) {
+             $domain = $request->getHost();
+            }
+        }
+
+        if ($domain === null) {
+            $input = new ArgvInput();
+
+            $domain = $input->getParameterOption(['--domain', '-d'], null);
+        }
+
+        if ($domain === null) {
+            return null;
+        }
+
+        return $this->getWebsiteByHost($domain);
     }
 
     /**
