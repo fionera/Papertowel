@@ -10,7 +10,7 @@
             <argument type="service" id="logger"/>
             <argument type="service" id="session"/>
         </service>
-        <service id="papertowel.framework.translation.language_provider" alias="Papertowel\Framework\Modules\Translation\LanguageProvider"/>
+        <service id="papertowel.framework.translation.language_provider" alias="Papertowel\Framework\Modules\Translation\LanguageProvider" public="true"/>
 
         <service id="Papertowel\Framework\Modules\Translation\LanguageVariables" autowire="true" public="false">
             <argument type="service" id="papertowel.framework.website.website_provider"/>
