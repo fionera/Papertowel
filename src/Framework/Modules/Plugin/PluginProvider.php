@@ -18,7 +18,7 @@ class PluginProvider
     /**
      * @var PluginInterface[]|null
      */
-    private $plugins;
+    private static $plugins;
 
     /**
      * LanguageProvider constructor.
@@ -34,7 +34,7 @@ class PluginProvider
      */
     public function getPluginList(): array
     {
-        return $this->plugins ?? [];
+        return self::$plugins ?? [];
     }
 
     /**
@@ -53,7 +53,7 @@ class PluginProvider
      */
     public function getPlugin(string $pluginName): ?PluginInterface
     {
-        return $this->plugins[$pluginName] ?? null;
+        return self::$plugins[$pluginName] ?? null;
     }
 
     /**
@@ -61,7 +61,7 @@ class PluginProvider
      */
     public function loadPlugin(string $pluginName): void
     {
-        $this->plugins[$pluginName] = $this->loadPluginFromDisk($pluginName);
+        self::$plugins[$pluginName] = $this->loadPluginFromDisk($pluginName);
     }
 
     /**

@@ -29,7 +29,7 @@ class ThemeProvider
      * A cache for all Themes
      * @var ThemeInterface[]
      */
-    private $themes = [];
+    private static $themes = [];
 
     private $booted;
 
@@ -109,11 +109,11 @@ class ThemeProvider
             $this->loadAllThemes();
         }
 
-        if (!array_key_exists($themeName, $this->themes)) {
+        if (!array_key_exists($themeName, self::$themes)) {
             throw new ThemeNotFoundException('Could not found Theme "' . $themeName . '"');
         }
 
-        return $this->themes[$themeName];
+        return self::$themes[$themeName];
     }
 
     /**
@@ -131,13 +131,13 @@ class ThemeProvider
      */
     public function getThemeNames(): array
     {
-        return array_keys($this->themes);
+        return array_keys(self::$themes);
     }
 
     private function loadAllThemes(): void
     {
         foreach ($this->getAllThemeFoldersWithName() as $themeName => $themeFolder) {
-            $this->themes[$themeName] = $this->loadTheme($themeName);
+            self::$themes[$themeName] = $this->loadTheme($themeName);
         }
 
         $this->booted = true;

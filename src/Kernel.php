@@ -90,7 +90,9 @@ class Kernel extends BaseKernel
             }
         }
 
-        foreach ($this->getPlugins() as $plugin) {
+        $this->plugins->addAll($this->getPlugins());
+
+        foreach ($this->plugins->getActivePlugins() as $plugin) {
             yield $plugin;
         }
     }
@@ -133,6 +135,8 @@ AND plugin_state.enabled = 1 AND plugin_state.installed = 1');
         $loadedPlugins = $this->pluginProvider->getPluginList();
 
         foreach ($enabledPlugins as $pluginName) {
+            $loadedPlugins[$pluginName]->setEnabled(true);
+
             if (!array_key_exists($pluginName, $loadedPlugins)) {
                 throw new \RuntimeException('Missing Plugin: ' . $pluginName);
             }
@@ -145,10 +149,6 @@ AND plugin_state.enabled = 1 AND plugin_state.installed = 1');
     {
         parent::initializeContainer();
         $this->container->set('papertowel.framework.plugin.plugin_provider', $this->pluginProvider);
-
-        foreach ($this->plugins->getActivePlugins() as $plugin) {
-            $plugin->setContainer($this->container);
-        }
 
         Papertowel::setInstance(new Papertowel($this->container));
     }
