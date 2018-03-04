@@ -71,6 +71,6 @@ class Language
      */
     public function setName(Translation $name): void
     {
-        $this->name = $name->getTranslationId();
+        $this->name = $name;
     }
 }

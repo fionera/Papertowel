@@ -45,7 +45,7 @@ class LanguageProvider
      */
     public function getDefaultLanguage(): Language
     {
-        return $this->registry->getRepository(Language::class)->findOneBy(['id' => 1]);
+        return $this->registry->getRepository(Language::class)->findOneBy(['id' => 1]) ?? new Language('en_EN', null);
     }
 
     /**
