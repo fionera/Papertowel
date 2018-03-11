@@ -61,7 +61,7 @@ class Language
     /**
      * @return Translation
      */
-    public function getName() //TODO: Add Translation return type
+    public function getName(): Translation
     {
         return $this->name;
     }
