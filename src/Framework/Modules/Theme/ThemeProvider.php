@@ -55,13 +55,14 @@ class ThemeProvider
     public function getDependencyNames(ThemeInterface $theme): array
     {
         $dependencies = [];
-        $dependencies[] = $theme->getDependencies();
 
-        foreach ($theme->getDependencies() as $dependency) {
-            $dependencies[] = $this->getDependencyNames($this->getThemeByName($dependency));
+        $currentTheme = $theme;
+        while (!empty($currentTheme->getDependency())) {
+            $dependencies[] = $currentTheme->getDependency();
+            $currentTheme = $this->getThemeByName($currentTheme->getDependency());
         }
 
-        return array_unique(array_merge(...$dependencies));
+        return $dependencies;
     }
 
     /**

@@ -8,7 +8,7 @@ interface ThemeInterface
 
     public function getAuthor(): ?string;
 
-    public function getDependencies(): array;
+    public function getDependency(): string;
 
     public function getCss(): array;
 

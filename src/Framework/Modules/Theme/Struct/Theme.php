@@ -15,9 +15,9 @@ abstract class Theme implements ThemeInterface
     protected $author;
 
     /**
-     * @var string[]
+     * @var string
      */
-    protected $dependencies = [];
+    protected $dependency = '';
 
     /**
      * @var array
@@ -55,9 +55,9 @@ abstract class Theme implements ThemeInterface
     /**
      * @return string[]
      */
-    public function getDependencies(): array
+    public function getDependency(): string
     {
-        return $this->dependencies;
+        return $this->dependency;
     }
 
     /**
