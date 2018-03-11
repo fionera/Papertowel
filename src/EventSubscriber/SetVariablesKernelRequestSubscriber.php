@@ -5,6 +5,7 @@ namespace Papertowel\EventSubscriber;
 use Papertowel\Framework\Entity\Website\Website;
 use Papertowel\Framework\Modules\Theme\Struct\ThemeInterface;
 use Papertowel\Framework\Modules\Theme\ThemeProvider;
+use Papertowel\Framework\Modules\Theme\Twig\Loader\ThemeInheritanceLoader;
 use Papertowel\Framework\Modules\Translation\LanguageProvider;
 use Papertowel\Framework\Modules\Website\WebsiteProvider;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -148,22 +149,22 @@ class SetVariablesKernelRequestSubscriber implements EventSubscriberInterface
         /** @var string[] $themePaths */
         $themePaths = $this->themeProvider->getAllThemeFoldersWithName();
 
-        if ($loader instanceof FilesystemLoader) {
-            foreach ($themePaths as $themeName => $path) {
-                if ($themeName) {
-                    $loader->setPaths($path, $themeName);
-                }
-            }
+        $newLoader = new ThemeInheritanceLoader($this->themeProvider->getThemeByName($this->theme->getDependency()));
 
-            $loader->setPaths($themePaths[$this->theme->getName()]);
-//            else {
-//                $paths = $loader->getPaths();
-//                $paths[0] = $themePaths;
-//                $loader->setPaths($paths);
-//            }
+        if ($loader instanceof FilesystemLoader) {
+            foreach ($loader->getNamespaces() as $namespace) {
+                $newLoader->setPaths($loader->getPaths($namespace), $namespace);
+            }
         } else {
             throw new \LogicException('Twig Templateloader is not an Instance of FilesystemLoader');
         }
+
+        foreach ($themePaths as $themeName => $path) {
+            $newLoader->addPath($path, $themeName);
+        }
+
+        $newLoader->addPath($themePaths[$this->theme->getName()]);
+        $this->environment->setLoader($newLoader);
     }
 
     /**
