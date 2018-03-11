@@ -110,17 +110,22 @@ INNER JOIN plugin ON(plugin.id = plugin_state.plugin_id)
 WHERE website_id IN (SELECT website.id FROM website WHERE `domain` = ?) 
 AND plugin_state.enabled = 1 AND plugin_state.installed = 1');
 
+        $domain = null;
         if ($this->request !== null) {
             $domain = $this->request->getHost();
         } else {
             //Must be a Command
-            $input = new ArgvInput();
-            $output = new ConsoleOutput();
-            if (!$input->hasParameterOption(['--domain', '-d'], true)) {
-                $output->writeln('<error>You did not provide a Domain. Please note that no Plugins are loaded</error>');
+            if (getenv('DOMAIN') !== false){
+                $domain = getenv('DOMAIN');
             }
 
-            $domain = $input->getParameterOption(['--domain', '-d'], null);
+            $input = new ArgvInput();
+            if ($domain === null && !$input->hasParameterOption(['--domain', '-d'], true)) {
+                $output = new ConsoleOutput();
+                $output->writeln('<error>You did not provide a Domain. Please note that no Plugins are loaded</error>');
+
+                $domain = $input->getParameterOption(['--domain', '-d']);
+            }
         }
 
         if ($domain !== null) {
