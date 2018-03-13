@@ -5,7 +5,6 @@
 
 namespace Papertowel\Framework\Modules\Plugin\Struct;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 abstract class Plugin extends Bundle implements PluginInterface
@@ -85,18 +84,8 @@ abstract class Plugin extends Bundle implements PluginInterface
         // Nothing to do
     }
 
-    /**
-     * @param ContainerInterface $container
-     */
     public function onUninstall(): void
     {
         // Nothing to do
-    }
-
-    //TODO: Remove?
-    //https://stackoverflow.com/questions/1993721/how-to-convert-camelcase-to-camel-case
-    private function camelCaseToUnderscore(string $string): string
-    {
-        return strtolower(ltrim(preg_replace('/[A-Z]([A-Z](?![a-z]))*/', '_$0', $string), '_'));
     }
 }

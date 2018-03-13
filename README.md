@@ -41,11 +41,11 @@ This enables overriding at Filelayer. But leads to higher CPU usage because ever
 
 ## Todo:
 - Backend
-- ~~Plugin System~~ (Missing better autoloading)
+- ~~Plugin System~~
 - Less Compiler
 - Typescript Support
 - Optimizing
-- Themes without Namespaces
+- ~~Themes without Namespaces~~ (You can use @ThemeName or @parent for the Parent Theme, currently this is always Base)
 
 ## Pull Request
 Please help this Project to grow :)

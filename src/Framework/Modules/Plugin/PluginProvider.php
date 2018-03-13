@@ -7,6 +7,7 @@
 namespace Papertowel\Framework\Modules\Plugin;
 
 use Papertowel\Framework\Modules\Plugin\Struct\PluginInterface;
+use Zend\Code\Reflection\ClassReflection;
 
 class PluginProvider
 {
@@ -14,6 +15,11 @@ class PluginProvider
      * @var string
      */
     private $pluginBasePath;
+
+    /**
+     * @var Psr4ClassLoader
+     */
+    private $classLoader;
 
     /**
      * @var PluginInterface[]|null
@@ -27,6 +33,8 @@ class PluginProvider
     public function __construct(string $pluginBasePath)
     {
         $this->pluginBasePath = $pluginBasePath;
+        $this->classLoader = new Psr4ClassLoader();
+        $this->classLoader->register();
     }
 
     /**
@@ -88,7 +96,8 @@ class PluginProvider
      */
     private function loadPluginFromDisk(string $pluginName): ?PluginInterface
     {
-        $classPath = $this->pluginBasePath . '/' . $pluginName . '/' . $pluginName . '.php';
+        $pluginPath = $this->pluginBasePath . '/' . $pluginName;
+        $classPath = $pluginPath . '/' . $pluginName . '.php';
 
         if (!file_exists($classPath)) {
             throw new \LogicException('Could not find ' . $pluginName . '.php for Plugin');
@@ -102,6 +111,8 @@ class PluginProvider
         if (!($class instanceof PluginInterface)) {
             throw new \LogicException('Plugin must Implement PluginInterface: "' . $pluginName . '"');
         }
+
+        $this->classLoader->addNamespace($pluginName, $pluginPath);
 
         return $class;
     }

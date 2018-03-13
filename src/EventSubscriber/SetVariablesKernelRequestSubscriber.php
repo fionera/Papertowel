@@ -3,6 +3,7 @@
 namespace Papertowel\EventSubscriber;
 
 use Papertowel\Framework\Entity\Website\Website;
+use Papertowel\Framework\Modules\Plugin\PluginProvider;
 use Papertowel\Framework\Modules\Theme\Struct\ThemeInterface;
 use Papertowel\Framework\Modules\Theme\ThemeProvider;
 use Papertowel\Framework\Modules\Theme\Twig\Loader\ThemeInheritanceLoader;
@@ -47,6 +48,10 @@ class SetVariablesKernelRequestSubscriber implements EventSubscriberInterface
      * @var ThemeInterface
      */
     private $theme;
+    /**
+     * @var PluginProvider
+     */
+    private $pluginProvider;
 
     private $done = false;
 
@@ -55,16 +60,18 @@ class SetVariablesKernelRequestSubscriber implements EventSubscriberInterface
      * @param WebsiteProvider $websiteProvider
      * @param LanguageProvider $languageProvider
      * @param ThemeProvider $themeProvider
+     * @param PluginProvider $pluginProvider
      * @param Environment $environment
      * @param RegistryInterface $registry
      */
-    public function __construct(WebsiteProvider $websiteProvider, LanguageProvider $languageProvider, ThemeProvider $themeProvider, Environment $environment, RegistryInterface $registry)
+    public function __construct(WebsiteProvider $websiteProvider, LanguageProvider $languageProvider, ThemeProvider $themeProvider, PluginProvider $pluginProvider, Environment $environment, RegistryInterface $registry)
     {
         $this->websiteProvider = $websiteProvider;
         $this->languageProvider = $languageProvider;
         $this->themeProvider = $themeProvider;
         $this->environment = $environment;
         $this->registry = $registry;
+        $this->pluginProvider = $pluginProvider;
     }
 
     /**
@@ -164,6 +171,11 @@ class SetVariablesKernelRequestSubscriber implements EventSubscriberInterface
         }
 
         $newLoader->addPath($themePaths[$this->theme->getName()]);
+
+        foreach ($this->pluginProvider->getPluginList() as $name => $plugin) {
+            $newLoader->addPath($plugin->getPath() . '/templates', $name);
+        }
+
         $this->environment->setLoader($newLoader);
     }
 

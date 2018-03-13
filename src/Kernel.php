@@ -107,7 +107,7 @@ class Kernel extends BaseKernel
 
         $enabledPluginsPrepared = $connection->prepare('SELECT plugin.name FROM plugin_state
 INNER JOIN plugin ON(plugin.id = plugin_state.plugin_id)
-WHERE website_id IN (SELECT website.id FROM website WHERE `domain` = ?) 
+WHERE website_id = (SELECT website.id FROM website WHERE `domain` = ?) 
 AND plugin_state.enabled = 1 AND plugin_state.installed = 1');
 
         $domain = null;
@@ -115,16 +115,17 @@ AND plugin_state.enabled = 1 AND plugin_state.installed = 1');
             $domain = $this->request->getHost();
         } else {
             //Must be a Command
-            if (getenv('DOMAIN') !== false){
+            if (getenv('DOMAIN') !== false) {
                 $domain = getenv('DOMAIN');
             }
 
             $input = new ArgvInput();
-            if ($domain === null && !$input->hasParameterOption(['--domain', '-d'], true)) {
+            if ($domain === null && $input->hasParameterOption(['--domain', '-d'], true)) {
+                $domain = $input->getParameterOption(['--domain', '-d']);
+            }
+            if ($domain === null) {
                 $output = new ConsoleOutput();
                 $output->writeln('<error>You did not provide a Domain. Please note that no Plugins are loaded</error>');
-
-                $domain = $input->getParameterOption(['--domain', '-d']);
             }
         }
 
@@ -184,5 +185,9 @@ AND plugin_state.enabled = 1 AND plugin_state.installed = 1');
             $routes->import($confDir . '/routes/' . $this->environment . '/**/*' . self::CONFIG_EXTS, '/', 'glob');
         }
         $routes->import($confDir . '/routes' . self::CONFIG_EXTS, '/', 'glob');
+
+        foreach ($this->plugins->getActivePlugins() as $activePlugin) {
+            $routes->import($activePlugin->getPath() . '/Controller/', '/', 'annotation');
+        }
     }
 }
