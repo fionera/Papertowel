@@ -36,6 +36,22 @@ class Kernel extends BaseKernel
     private $pluginProvider;
 
     /**
+     * @var string|null
+     */
+    private $domain;
+
+    /**
+     * @var string
+     */
+    private $configHash;
+
+    /**
+     * Random for Containername when no Domain provided
+     * @var string
+     */
+    private $random;
+
+    /**
      * Kernel constructor.
      * @param string $environment
      * @param bool $debug
@@ -45,6 +61,7 @@ class Kernel extends BaseKernel
         parent::__construct($environment, $debug);
 
         $this->plugins = new PluginList();
+        $this->random = \substr(\str_shuffle(\md5(\microtime())), 0, 10);
     }
 
     /**
@@ -52,7 +69,9 @@ class Kernel extends BaseKernel
      */
     public function getCacheDir()
     {
-        return $this->getProjectDir() . '/var/cache/' . $this->environment;
+        /** @noinspection PhpExpressionResultUnusedInspection */
+        $this->configHash ?? $this->configHash = md5(implode('_', array_keys($this->bundles)));
+        return $this->getProjectDir() . '/var/cache/' . $this->environment . '/' . ($this->domain ?? $this->random) . '_' . $this->configHash;
     }
 
     /**
@@ -60,7 +79,7 @@ class Kernel extends BaseKernel
      */
     public function getLogDir()
     {
-        return $this->getProjectDir() . '/var/log';
+        return $this->getProjectDir() . '/var/log/' . ($this->domain ?? $this->random) . '_' . $this->configHash;
     }
 
     /**
@@ -72,6 +91,24 @@ class Kernel extends BaseKernel
     public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
         $this->request = $request;
+
+        if ($this->request !== null) {
+            $this->domain = $this->request->getHost();
+        } else {
+            //Must be a Command
+            if (getenv('DOMAIN') !== false) {
+                $this->domain = getenv('DOMAIN');
+            }
+
+            $input = new ArgvInput();
+            if ($this->domain === null && $input->hasParameterOption(['--domain', '-d'], true)) {
+                $this->domain = $input->getParameterOption(['--domain', '-d']);
+            }
+            if ($this->domain === null) {
+                $output = new ConsoleOutput();
+                $output->writeln('<error>You did not provide a Domain. Please note that no Plugins are loaded</error>');
+            }
+        }
 
         return parent::handle($request, $type, $catch);
     }
@@ -110,27 +147,8 @@ INNER JOIN plugin ON(plugin.id = plugin_state.plugin_id)
 WHERE website_id = (SELECT website.id FROM website WHERE `domain` = ?) 
 AND plugin_state.enabled = 1 AND plugin_state.installed = 1');
 
-        $domain = null;
-        if ($this->request !== null) {
-            $domain = $this->request->getHost();
-        } else {
-            //Must be a Command
-            if (getenv('DOMAIN') !== false) {
-                $domain = getenv('DOMAIN');
-            }
-
-            $input = new ArgvInput();
-            if ($domain === null && $input->hasParameterOption(['--domain', '-d'], true)) {
-                $domain = $input->getParameterOption(['--domain', '-d']);
-            }
-            if ($domain === null) {
-                $output = new ConsoleOutput();
-                $output->writeln('<error>You did not provide a Domain. Please note that no Plugins are loaded</error>');
-            }
-        }
-
-        if ($domain !== null) {
-            $enabledPluginsPrepared->execute([$domain]);
+        if ($this->domain !== null) {
+            $enabledPluginsPrepared->execute([$this->domain]);
             $enabledPlugins = $enabledPluginsPrepared->fetchAll(\PDO::FETCH_COLUMN);
         } else {
             $enabledPlugins = [];
@@ -189,5 +207,13 @@ AND plugin_state.enabled = 1 AND plugin_state.installed = 1');
         foreach ($this->plugins->getActivePlugins() as $activePlugin) {
             $routes->import($activePlugin->getPath() . '/Controller/', '/', 'annotation');
         }
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDomain(): ?string
+    {
+        return $this->domain;
     }
 }
