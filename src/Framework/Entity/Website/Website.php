@@ -27,7 +27,6 @@ class Website implements WebsiteInterface
     private $id;
 
     /**
-     * @ORM\Column(type="integer", name="parent_id", nullable=true)
      * @ORM\ManyToOne(targetEntity="Papertowel\Framework\Entity\Website\Website")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @var Website|null $parent
@@ -224,5 +223,10 @@ class Website implements WebsiteInterface
     public function isBareDomain(): bool
     {
         return $this->parent === null;
+    }
+
+    public function __toString()
+    {
+        return $this->getPageTitle()->getTranslationString() . ' - "' . $this->getDomain() . '"';
     }
 }

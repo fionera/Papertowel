@@ -156,7 +156,7 @@ class SetVariablesKernelRequestSubscriber implements EventSubscriberInterface
         /** @var string[] $themePaths */
         $themePaths = $this->themeProvider->getAllThemeFoldersWithName();
 
-        $newLoader = new ThemeInheritanceLoader($this->themeProvider->getThemeByName($this->theme->getDependency()));
+        $newLoader = new ThemeInheritanceLoader($this->themeProvider->getThemeByName($this->theme->getDependency())); //TODO: When Theme is Base this is a empty String
 
         if ($loader instanceof FilesystemLoader) {
             foreach ($loader->getNamespaces() as $namespace) {

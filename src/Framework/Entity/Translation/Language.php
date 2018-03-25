@@ -73,4 +73,9 @@ class Language
     {
         $this->name = $name;
     }
+
+    public function __toString()
+    {
+        return $this->getName()->getTranslationString() . ' (' . $this->getLanguageString() . ')';
+    }
 }

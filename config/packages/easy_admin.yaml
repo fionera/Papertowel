@@ -2,5 +2,6 @@ easy_admin:
     entities:
 #        # List the entity class name you want to manage
         - Papertowel\Framework\Entity\Website\Website
+        - Papertowel\Framework\Entity\Plugin\Plugin
 #        - App\Entity\Category
 #        - App\Entity\User
