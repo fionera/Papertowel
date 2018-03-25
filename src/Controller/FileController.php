@@ -5,6 +5,7 @@
 
 namespace Papertowel\Controller;
 
+use Papertowel\Framework\Modules\Theme\Struct\ThemeInterface;
 use Papertowel\Framework\Modules\Theme\ThemeProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,14 +17,20 @@ class FileController extends Controller
      * @var ThemeProvider
      */
     private $themeProvider;
+    /**
+     * @var ThemeInterface
+     */
+    private $theme;
 
     /**
      * FileController constructor.
      * @param ThemeProvider $themeProvider
+     * @param ThemeInterface $theme
      */
-    public function __construct(ThemeProvider $themeProvider)
+    public function __construct(ThemeProvider $themeProvider, ThemeInterface $theme)
     {
         $this->themeProvider = $themeProvider;
+        $this->theme = $theme;
     }
 
     /**
@@ -34,25 +41,22 @@ class FileController extends Controller
      */
     public function indexAction(string $filePath): Response
     {
-        /** @var string $filePath */
-        $filePath = $this->fileExists($filePath);
-
-        if ($filePath === '') {
+        if ($this->fileExists($filePath) === null) {
             throw $this->createNotFoundException();
         }
 
         return $this->render($filePath);
     }
 
-    private function fileExists(string $path): string
+    private function fileExists(string $path): ?string
     {
-        $paths = $this->themeProvider->getDependencyNamespaces($this->themeProvider->getThemeForCurrentRequest());
+        $paths = $this->themeProvider->getDependencyNames($this->theme);
         foreach ($paths as $themeName => $templatePath) {
             if (file_exists($templatePath . '/public/' . $path)) {
                 return '@' . $themeName .'/' . 'public/' . $path;
             }
         }
 
-        return '';
+        return null;
     }
 }

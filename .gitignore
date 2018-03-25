@@ -128,11 +128,6 @@ fabric.properties
 /web/js/
 
 # End of https://www.gitignore.io/api/symfony,composer,intellij
-
-###> maba/webpack-bundle ###
-/node_modules/
-###< maba/webpack-bundle ###
-
 ###> symfony/web-server-bundle ###
 .web-server-pid
 ###< symfony/web-server-bundle ###
